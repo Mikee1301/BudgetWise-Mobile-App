@@ -1,9 +1,14 @@
 import {
   ArrowDownLeft,
   ArrowUpRight,
+  Briefcase,
+  Coffee,
   CreditCard,
+  DollarSign,
   PiggyBank,
   RefreshCcw,
+  ShoppingCart,
+  Zap,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -18,6 +23,7 @@ import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 import BalanceCard from "../../components/dashboard/BalanceCard";
 import { QuickActionButton } from "../../components/dashboard/QuickActionsButtons";
+import { TransactionItem } from "../../components/dashboard/TransactionItem";
 
 const Dashboard = () => {
   const quickActions = [
@@ -58,16 +64,61 @@ const Dashboard = () => {
     },
   ];
 
+  const transactions = [
+    {
+      id: 1,
+      name: "Grocery Shopping",
+      date: "2025-06-12",
+      category: "Groceries",
+      icon: <ShoppingCart size={24} color="#EF4444" strokeWidth={2} />, // Groceries icon
+      amount: -1500.75, // Negative for expense
+    },
+    {
+      id: 2,
+      name: "Salary",
+      date: "2025-06-10",
+      category: "Income",
+      icon: <DollarSign size={24} color="#10B981" strokeWidth={2} />, // Income icon
+      amount: 50000.0, // Positive for income
+    },
+    {
+      id: 3,
+      name: "Electric Bill",
+      date: "2025-06-08",
+      category: "Utilities",
+      icon: <Zap size={24} color="#F59E0B" strokeWidth={2} />, // Utilities icon
+      amount: -3500.0, // Negative for expense
+    },
+    {
+      id: 4,
+      name: "Dining Out",
+      date: "2025-06-07",
+      category: "Food & Drinks",
+      icon: <Coffee size={24} color="#EF4444" strokeWidth={2} />, // Food & Drinks icon
+      amount: -1200.0, // Negative for expense
+    },
+    {
+      id: 5,
+      name: "Freelance Payment",
+      date: "2025-06-05",
+      category: "Income",
+      icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />, // Freelance Payment icon
+      amount: 15000.0, // Positive for income
+    },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* App Bar Section*/}
       <AppBar />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Balance Card Section*/}
         <BalanceCard />
-
+        {/* Quick Actions Section*/}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <Spacer height={5} />
@@ -86,6 +137,7 @@ const Dashboard = () => {
 
         <Spacer height={20} />
 
+        {/* My Accounts Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>My Accounts</Text>
@@ -93,7 +145,6 @@ const Dashboard = () => {
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          <Spacer height={10} />
           {accounts.map((account) => (
             <Card
               style={styles.accountCard}
@@ -118,6 +169,26 @@ const Dashboard = () => {
               </View>
             </Card>
           ))}
+        </View>
+
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Recent Transactions</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>See All</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Card style={styles.transactionsCard}>
+            {transactions.map((transaction, index) => (
+              <View key={transaction.id}>
+                <TransactionItem transaction={transaction} />
+                {index < transactions.length - 1 && (
+                  <View style={styles.transactionSeparator} />
+                )}
+              </View>
+            ))}
+          </Card>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -201,5 +272,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#111827",
     textAlign: "right",
+  },
+  transactionsCard: {
+    padding: 0,
+  },
+  transactionSeparator: {
+    height: 1,
+    backgroundColor: "#F3F4F6",
+    marginLeft: 60,
   },
 });
