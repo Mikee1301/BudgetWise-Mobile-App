@@ -1,6 +1,13 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import React, { ReactNode } from "react";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
-const Card = ({ children, style, onPress }) => {
+interface CardProps {
+  children: ReactNode;
+  style?: ViewStyle | ViewStyle[];
+  onPress?: () => void;
+}
+
+const Card: React.FC<CardProps> = ({ children, style, onPress }) => {
   return (
     <TouchableOpacity
       style={[styles.card, style]}
@@ -11,6 +18,7 @@ const Card = ({ children, style, onPress }) => {
     </TouchableOpacity>
   );
 };
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",

@@ -3,16 +3,21 @@ import { ArrowDownLeft, ArrowUpRight, Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const BalanceCard = ({ style, ...props }) => {
-  const [balanceVisible, setBalanceVisible] = useState(true);
+interface BalanceCardProps {
+  style?: object;
+}
 
-  const totalBalance = 12450.75; //Temprary balance
-  const monthlyIncome = 4250.0; //Temprary Montly Income
-  const monthlyExpenses = 2180.25; //Temprary Montly Expenses
+const BalanceCard: React.FC<BalanceCardProps> = ({ style, ...props }) => {
+  const [balanceVisible, setBalanceVisible] = useState<boolean>(true);
+
+  const totalBalance: number = 12450.75; // Temporary balance
+  const monthlyIncome: number = 4250.0; // Temporary monthly income
+  const monthlyExpenses: number = 2180.25; // Temporary monthly expenses
+
   return (
     <LinearGradient
       colors={["#6366F1", "#8B5CF6"]}
-      style={styles.balanceCard}
+      style={[styles.balanceCard, style]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
@@ -64,7 +69,7 @@ const BalanceCard = ({ style, ...props }) => {
           <View>
             <Text style={styles.statLabel}>Expenses</Text>
             <Text style={styles.statValue}>
-              -Php
+              -PHP
               {monthlyExpenses.toLocaleString("en-US", {
                 minimumFractionDigits: 2,
               })}

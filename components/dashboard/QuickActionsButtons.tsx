@@ -10,7 +10,7 @@ const { width } = Dimensions.get("window");
 
 interface QuickActionButtonProps {
   title: string;
-  icon: string;
+  icon: React.ReactNode;
   color: string;
   onPress: () => void;
 }
@@ -28,7 +28,7 @@ export function QuickActionButton({
       activeOpacity={0.7}
     >
       <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
-        <Text style={styles.icon}>{icon}</Text>
+        {icon}
       </View>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
