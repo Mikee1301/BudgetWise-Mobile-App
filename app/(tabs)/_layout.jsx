@@ -7,6 +7,13 @@ const TabLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarActiveTintColor: "#6366F1", // Example: active tab color
+        tabBarInactiveTintColor: "#6B7280", // Example: inactive tab color
+        tabBarStyle: {
+          // backgroundColor: '#FFFFFF', // Your tab bar style
+          // borderTopWidth: 0,
+        },
+        // animation: "fade",
       }}
     >
       <Tabs.Screen
@@ -15,6 +22,19 @@ const TabLayout = () => {
           title: "Dashboard",
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="dashboard" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="accounts"
+        options={{
+          title: "Accounts",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="account-balance-wallet"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />

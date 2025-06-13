@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -26,6 +27,7 @@ import { QuickActionButton } from "../../components/dashboard/QuickActionsButton
 import { TransactionItem } from "../../components/dashboard/TransactionItem";
 
 const Dashboard = () => {
+  const navigation = useNavigation();
   const quickActions = [
     {
       id: 1,
@@ -108,7 +110,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { flex: 1 }]}>
       {/* App Bar Section*/}
       <AppBar />
       <ScrollView
@@ -141,10 +143,11 @@ const Dashboard = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>My Accounts</Text>
-            <TouchableOpacity onPress={() => console.log("See All pressed")}>
+            <TouchableOpacity onPress={() => navigation.navigate("accounts")}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
+          <Spacer height={20} />
           {accounts.map((account) => (
             <Card
               style={styles.accountCard}
