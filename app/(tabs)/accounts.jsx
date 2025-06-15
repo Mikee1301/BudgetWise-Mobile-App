@@ -1,4 +1,4 @@
-import { CreditCard, PiggyBank } from "lucide-react-native";
+import { CreditCard, PiggyBank, Plus } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
@@ -218,6 +218,15 @@ const Accounts = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<Spacer height={20} />}
       />
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => {
+          console.log("Add Account Pressed");
+          // Navigate to Add Account screen or show a modal
+        }}
+      >
+        <Plus size={28} color="#fff" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -318,5 +327,21 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#111827",
     textAlign: "right",
+  },
+  fab: {
+    position: "absolute",
+    width: 56,
+    height: 56,
+    alignItems: "center",
+    justifyContent: "center",
+    right: 20,
+    bottom: 20,
+    backgroundColor: "#6366F1",
+    borderRadius: 28,
+    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    zIndex: 10,
   },
 });
