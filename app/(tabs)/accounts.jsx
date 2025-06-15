@@ -1,10 +1,14 @@
+import { Picker } from "@react-native-picker/picker"; // Import Picker
 import { CreditCard, PiggyBank, Plus } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   FlatList,
-  StyleSheet,
-  Text,
+  Modal,
+  Pressable,
+  StyleSheet, // Import Button for simplicity, or use TouchableOpacity
+  Text, // Import Pressable
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -21,6 +25,14 @@ const Accounts = () => {
   const sliderWidth = useRef(new Animated.Value(0)).current;
   const layoutsRef = useRef({}); // To store x and width of each filter item
   const [initialLayoutDone, setInitialLayoutDone] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editingAccount, setEditingAccount] = useState(null); // To store the account being edited
+
+  // State for new account form
+  const [newAccountName, setNewAccountName] = useState("");
+  const [newAccountBalance, setNewAccountBalance] = useState("");
+  const [newAccountNo, setNewAccountNo] = useState("");
+  const [newAccountCategory, setNewAccountCategory] = useState(filterItem[1]); // Default to 'Banks' or first category
 
   const accounts = [
     {
@@ -136,6 +148,65 @@ const Accounts = () => {
     }
   }, [selectedFilter, initialLayoutDone]);
 
+  const openModalForEdit = (account) => {
+    setEditingAccount(account);
+    setNewAccountName(account.name);
+    setNewAccountBalance(account.balance.toString());
+    setNewAccountNo(account.accountNo.toString());
+    setNewAccountCategory(account.category);
+    setModalVisible(true);
+  };
+
+  const openModalForAdd = () => {
+    setEditingAccount(null);
+    setNewAccountName("");
+    setNewAccountBalance("");
+    setNewAccountNo("");
+    setNewAccountCategory(filterItem[1]); // Default to 'Banks'
+    setModalVisible(true);
+  };
+
+  const handleSaveAccount = () => {
+    // Basic validation (can be expanded)
+    if (!newAccountName || !newAccountBalance || !newAccountNo) {
+      alert("Please fill all fields");
+      return;
+    }
+    const accountData = {
+      name: newAccountName,
+      balance: parseFloat(newAccountBalance),
+      accountNo: newAccountNo,
+      category: newAccountCategory,
+    };
+
+    if (editingAccount) {
+      console.log("Updating Account:", { ...editingAccount, ...accountData });
+      // Here you would update the account in your state/backend
+    } else {
+      console.log("Adding New Account:", { id: Date.now(), ...accountData }); // Example ID
+      // Here you would add the new account to your state/backend
+    }
+
+    setModalVisible(false);
+    resetFormAndEditingState();
+  };
+
+  const handleDeleteAccount = () => {
+    if (editingAccount) {
+      console.log("Deleting Account:", editingAccount);
+      // Here you would delete the account from your state/backend
+      setModalVisible(false);
+      resetFormAndEditingState();
+    }
+  };
+
+  const resetFormAndEditingState = () => {
+    setEditingAccount(null);
+    setNewAccountName("");
+    setNewAccountBalance("");
+    setNewAccountNo("");
+    setNewAccountCategory(filterItem[1]);
+  };
   return (
     <SafeAreaView style={[styles.container, { flex: 1 }]}>
       <AppBar />
@@ -192,9 +263,7 @@ const Accounts = () => {
                   paddingVertical: 2,
                 },
               ]}
-              onPress={() =>
-                console.log(`Card ID: ${account.id}, Name: ${account.name}`)
-              }
+              onPress={() => openModalForEdit(account)}
             >
               <View style={[styles.accountContainer, { marginTop: 15 }]}>
                 <View style={styles.accountInfoWrapper}>
@@ -218,15 +287,99 @@ const Accounts = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<Spacer height={20} />}
       />
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => {
-          console.log("Add Account Pressed");
-          // Navigate to Add Account screen or show a modal
-        }}
-      >
+      <Spacer height={10} />
+      {/* Create Account Button */}
+      <TouchableOpacity style={styles.fab} onPress={openModalForAdd}>
         <Plus size={28} color="#fff" />
       </TouchableOpacity>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+          resetFormAndEditingState();
+        }}
+      >
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setModalVisible(false)}
+        >
+          <View
+            style={styles.modalContent}
+            onStartShouldSetResponder={() => true}
+          >
+            <Text style={styles.modalTitle}>
+              {editingAccount ? "Edit Account" : "New Account"}
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Account Name (e.g., Savings, BPI Credit)"
+              value={newAccountName}
+              onChangeText={setNewAccountName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Balance (e.g., 10000)"
+              keyboardType="numeric"
+              value={newAccountBalance}
+              onChangeText={setNewAccountBalance}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Account Number (last 4 digits if preferred)"
+              keyboardType="numeric"
+              value={newAccountNo}
+              onChangeText={setNewAccountNo}
+            />
+            <Text style={styles.label}>Category:</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={newAccountCategory}
+                style={styles.picker}
+                onValueChange={(itemValue, itemIndex) =>
+                  setNewAccountCategory(itemValue)
+                }
+              >
+                {filterItem.slice(1).map((cat) => (
+                  <Picker.Item key={cat} label={cat} value={cat} />
+                ))}
+              </Picker>
+            </View>
+            <Pressable
+              style={[styles.modalButton, styles.saveButton]}
+              onPress={handleSaveAccount}
+            >
+              <Text style={styles.modalButtonText}>
+                {editingAccount ? "Update Account" : "Add Account"}
+              </Text>
+            </Pressable>
+            <Spacer height={10} />
+            {editingAccount && (
+              <>
+                <Pressable
+                  style={[styles.modalButton, styles.deleteButton]}
+                  onPress={handleDeleteAccount}
+                >
+                  <Text style={styles.modalButtonText}>Delete Account</Text>
+                </Pressable>
+                <Spacer height={10} />
+              </>
+            )}
+            <Pressable
+              style={[styles.modalButton, styles.cancelButton]}
+              onPress={() => {
+                setModalVisible(false);
+                resetFormAndEditingState();
+              }}
+            >
+              <Text style={[styles.modalButtonText, styles.cancelButtonText]}>
+                Cancel
+              </Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -343,5 +496,84 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     zIndex: 10,
+  },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "stretch",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    marginTop: 5,
+  },
+  pickerContainer: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 15,
+    justifyContent: "center",
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+  },
+  modalButton: {
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  saveButton: {
+    backgroundColor: "#6366F1",
+  },
+  cancelButton: {
+    backgroundColor: "#EF4444",
+  },
+  deleteButton: {
+    backgroundColor: "#DC2626", // A darker red for delete
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

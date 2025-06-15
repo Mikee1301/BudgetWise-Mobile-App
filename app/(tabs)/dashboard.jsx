@@ -64,6 +64,13 @@ const Dashboard = () => {
       icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
       accountNo: 1234567,
     },
+    {
+      id: 3,
+      name: "BPI",
+      balance: 12485,
+      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
+      accountNo: 1234567,
+    },
   ];
 
   const transactions = [
@@ -101,6 +108,14 @@ const Dashboard = () => {
     },
     {
       id: 5,
+      name: "Freelance Payment",
+      date: "2025-06-05",
+      category: "Income",
+      icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />, // Freelance Payment icon
+      amount: 15000.0, // Positive for income
+    },
+    {
+      id: 6,
       name: "Freelance Payment",
       date: "2025-06-05",
       category: "Income",
@@ -148,7 +163,7 @@ const Dashboard = () => {
             </TouchableOpacity>
           </View>
           <Spacer height={20} />
-          {accounts.map((account) => (
+          {accounts.slice(0, 2).map((account) => (
             <Card
               style={styles.accountCard}
               key={account.id}
@@ -183,7 +198,7 @@ const Dashboard = () => {
           </View>
 
           <Card style={styles.transactionsCard}>
-            {transactions.map((transaction, index) => (
+            {transactions.slice(0, 5).map((transaction, index) => (
               <View key={transaction.id}>
                 <TransactionItem transaction={transaction} />
                 {index < transactions.length - 1 && (
