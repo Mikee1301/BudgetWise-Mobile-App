@@ -1,14 +1,11 @@
-import { Picker } from "@react-native-picker/picker"; // Import Picker
+import { useRouter } from "expo-router"; // Import useRouter
 import { CreditCard, PiggyBank, Plus } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   FlatList,
-  Modal,
-  Pressable,
   StyleSheet, // Import Button for simplicity, or use TouchableOpacity
-  Text, // Import Pressable
-  TextInput,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -18,6 +15,7 @@ import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 
 const Accounts = () => {
+  const router = useRouter(); // Initialize router
   const [selectedFilter, setSelectedFilter] = useState("All");
   const filterItem = ["All", "Banks", "Cards", "Cash"];
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -157,15 +155,6 @@ const Accounts = () => {
     setModalVisible(true);
   };
 
-  const openModalForAdd = () => {
-    setEditingAccount(null);
-    setNewAccountName("");
-    setNewAccountBalance("");
-    setNewAccountNo("");
-    setNewAccountCategory(filterItem[1]); // Default to 'Banks'
-    setModalVisible(true);
-  };
-
   const handleSaveAccount = () => {
     // Basic validation (can be expanded)
     if (!newAccountName || !newAccountBalance || !newAccountNo) {
@@ -181,11 +170,10 @@ const Accounts = () => {
 
     if (editingAccount) {
       console.log("Updating Account:", { ...editingAccount, ...accountData });
-      // Here you would update the account in your state/backend
-    } else {
-      console.log("Adding New Account:", { id: Date.now(), ...accountData }); // Example ID
-      // Here you would add the new account to your state/backend
+      // TODO: Here you would update the account in your state/backend
+      // This part is for editing only now
     }
+    // Adding new account is handled by create-account.jsx
 
     setModalVisible(false);
     resetFormAndEditingState();
@@ -194,7 +182,7 @@ const Accounts = () => {
   const handleDeleteAccount = () => {
     if (editingAccount) {
       console.log("Deleting Account:", editingAccount);
-      // Here you would delete the account from your state/backend
+      // TODO: Here you would delete the account from your state/backend
       setModalVisible(false);
       resetFormAndEditingState();
     }
@@ -206,7 +194,7 @@ const Accounts = () => {
     setNewAccountBalance("");
     setNewAccountNo("");
     setNewAccountCategory(filterItem[1]);
-  };
+  }; // This reset is now primarily for the edit modal
   return (
     <SafeAreaView style={[styles.container, { flex: 1 }]}>
       <AppBar />
@@ -263,7 +251,14 @@ const Accounts = () => {
                   paddingVertical: 2,
                 },
               ]}
-              onPress={() => openModalForEdit(account)}
+              onPress={() => {
+                const { icon, ...serializableAccountData } = account;
+                // Navigate to the create-account screen and pass account data
+                router.push({
+                  pathname: "/create-account",
+                  params: { account: JSON.stringify(serializableAccountData) }, // Pass account as a stringified JSON
+                });
+              }}
             >
               <View style={[styles.accountContainer, { marginTop: 15 }]}>
                 <View style={styles.accountInfoWrapper}>
@@ -289,10 +284,13 @@ const Accounts = () => {
       />
       <Spacer height={10} />
       {/* Create Account Button */}
-      <TouchableOpacity style={styles.fab} onPress={openModalForAdd}>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push("/create-account")} // Navigate to the new screen
+      >
         <Plus size={28} color="#fff" />
       </TouchableOpacity>
-      <Modal
+      {/* <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
@@ -309,9 +307,7 @@ const Accounts = () => {
             style={styles.modalContent}
             onStartShouldSetResponder={() => true}
           >
-            <Text style={styles.modalTitle}>
-              {editingAccount ? "Edit Account" : "New Account"}
-            </Text>
+            <Text style={styles.modalTitle}>Edit Account</Text>
             <TextInput
               style={styles.input}
               placeholder="Account Name (e.g., Savings, BPI Credit)"
@@ -350,9 +346,7 @@ const Accounts = () => {
               style={[styles.modalButton, styles.saveButton]}
               onPress={handleSaveAccount}
             >
-              <Text style={styles.modalButtonText}>
-                {editingAccount ? "Update Account" : "Add Account"}
-              </Text>
+              <Text style={styles.modalButtonText}>Update Account</Text>
             </Pressable>
             <Spacer height={10} />
             {editingAccount && (
@@ -379,7 +373,7 @@ const Accounts = () => {
             </Pressable>
           </View>
         </Pressable>
-      </Modal>
+      </Modal> */}
     </SafeAreaView>
   );
 };

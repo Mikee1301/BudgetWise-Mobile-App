@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -28,6 +29,7 @@ import { TransactionItem } from "../../components/dashboard/TransactionItem";
 
 const Dashboard = () => {
   const navigation = useNavigation();
+  const router = useRouter();
   const quickActions = [
     {
       id: 1,
@@ -167,9 +169,14 @@ const Dashboard = () => {
             <Card
               style={styles.accountCard}
               key={account.id}
-              onPress={() =>
-                console.log(`Card ID: ${account.id}, Name: ${account.name}`)
-              }
+              onPress={() => {
+                const { icon, ...serializableAccountData } = account;
+                // Navigate to the create-account screen and pass account data
+                router.push({
+                  pathname: "/create-account",
+                  params: { account: JSON.stringify(serializableAccountData) }, // Pass account as a stringified JSON
+                });
+              }}
             >
               <View style={styles.accountContainer}>
                 <View style={styles.accountInfoWrapper}>
