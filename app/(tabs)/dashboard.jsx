@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -26,6 +28,8 @@ import { QuickActionButton } from "../../components/dashboard/QuickActionsButton
 import { TransactionItem } from "../../components/dashboard/TransactionItem";
 
 const Dashboard = () => {
+  const navigation = useNavigation();
+  const router = useRouter();
   const quickActions = [
     {
       id: 1,
@@ -57,6 +61,13 @@ const Dashboard = () => {
     },
     {
       id: 2,
+      name: "BPI",
+      balance: 12485,
+      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
+      accountNo: 1234567,
+    },
+    {
+      id: 3,
       name: "BPI",
       balance: 12485,
       icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
@@ -105,10 +116,18 @@ const Dashboard = () => {
       icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />, // Freelance Payment icon
       amount: 15000.0, // Positive for income
     },
+    {
+      id: 6,
+      name: "Freelance Payment",
+      date: "2025-06-05",
+      category: "Income",
+      icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />, // Freelance Payment icon
+      amount: 15000.0, // Positive for income
+    },
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { flex: 1 }]}>
       {/* App Bar Section*/}
       <AppBar />
       <ScrollView
@@ -141,17 +160,23 @@ const Dashboard = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>My Accounts</Text>
-            <TouchableOpacity onPress={() => console.log("See All pressed")}>
+            <TouchableOpacity onPress={() => navigation.navigate("accounts")}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          {accounts.map((account) => (
+          <Spacer height={20} />
+          {accounts.slice(0, 2).map((account) => (
             <Card
               style={styles.accountCard}
               key={account.id}
-              onPress={() =>
-                console.log(`Card ID: ${account.id}, Name: ${account.name}`)
-              }
+              onPress={() => {
+                const { icon, ...serializableAccountData } = account;
+                // Navigate to the create-account screen and pass account data
+                router.push({
+                  pathname: "/create-account",
+                  params: { account: JSON.stringify(serializableAccountData) }, // Pass account as a stringified JSON
+                });
+              }}
             >
               <View style={styles.accountContainer}>
                 <View style={styles.accountInfoWrapper}>
@@ -180,7 +205,7 @@ const Dashboard = () => {
           </View>
 
           <Card style={styles.transactionsCard}>
-            {transactions.map((transaction, index) => (
+            {transactions.slice(0, 5).map((transaction, index) => (
               <View key={transaction.id}>
                 <TransactionItem transaction={transaction} />
                 {index < transactions.length - 1 && (
