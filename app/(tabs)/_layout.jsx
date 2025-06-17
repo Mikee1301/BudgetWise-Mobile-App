@@ -26,9 +26,24 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
+        name="transactions"
+        options={{
+          headerShown: true,
+          title: "Transactions",
+          headerTitle: "Transactions",
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="swap-horiz" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="accounts"
         options={{
+          headerShown: true,
           title: "Accounts",
+          headerTitle: "Accounts",
+          headerTitleAlign: "center",
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons
               name="account-balance-wallet"
