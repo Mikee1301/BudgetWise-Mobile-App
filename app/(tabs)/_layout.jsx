@@ -12,6 +12,9 @@ const TabLayout = () => {
         tabBarStyle: {
           // backgroundColor: '#FFFFFF', // Your tab bar style
           // borderTopWidth: 0,
+          height: 80,
+          paddingBottom: 10, // Adjust this value for bottom padding
+          paddingTop: 10,
         },
         // animation: "fade",
       }}
@@ -38,6 +41,18 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
+        name="create-transaction"
+        options={{
+          headerShown: true,
+          title: "",
+          headerTitle: "Add Transaction",
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="add-circle-outline" size={30} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="accounts"
         options={{
           headerShown: true,
@@ -50,6 +65,18 @@ const TabLayout = () => {
               size={size}
               color={color}
             />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          headerShown: true,
+          title: "Profile",
+          headerTitle: "Profile",
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person-outline" size={size} color={color} />
           ),
         }}
       />

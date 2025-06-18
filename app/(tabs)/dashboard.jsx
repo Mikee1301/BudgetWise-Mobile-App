@@ -199,7 +199,9 @@ const Dashboard = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recent Transactions</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("transactions")}
+            >
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
