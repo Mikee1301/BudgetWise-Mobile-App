@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 1,
+    elevation: 2,
   },
 });
 
