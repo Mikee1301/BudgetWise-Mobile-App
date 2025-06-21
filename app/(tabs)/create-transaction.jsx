@@ -1,7 +1,9 @@
-import DateTimePicker from "@react-native-community/datetimepicker"; // Import DateTimePicker
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { ArrowLeftRight, Minus, Plus } from "lucide-react-native";
 import { useState } from "react";
 import {
+  FlatList,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -9,10 +11,92 @@ import {
   Text,
   TextInput,
   View,
-} from "react-native"; // Added Platform
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
+
+const categories = [
+  {
+    id: "1",
+    name: "Food & Dining",
+    icon: "silverware-fork-knife",
+    color: "#D62828",
+    backgroundColor: "#FEE2E2",
+  },
+  {
+    id: "2",
+    name: "Shopping",
+    icon: "shopping-outline",
+    color: "#0077B6",
+    backgroundColor: "#E0F7FA",
+  },
+  {
+    id: "3",
+    name: "Transportation",
+    icon: "bus",
+    color: "#FCBF49",
+    backgroundColor: "#FFFBEA",
+  },
+  {
+    id: "4",
+    name: "Housing",
+    icon: "home-outline",
+    color: "#003049",
+    backgroundColor: "#E0E7FF",
+  },
+  {
+    id: "5",
+    name: "Utilities",
+    icon: "lightbulb-on-outline",
+    color: "#F77F00",
+    backgroundColor: "#FFF3E0",
+  },
+  {
+    id: "6",
+    name: "Health",
+    icon: "heart-pulse",
+    color: "#E63946",
+    backgroundColor: "#FEE2E2",
+  },
+  {
+    id: "7",
+    name: "Entertainment",
+    icon: "movie-open-outline",
+    color: "#457B9D",
+    backgroundColor: "#E0F7FA",
+  },
+];
+
+const accounts = [
+  {
+    id: "1",
+    name: "Cash",
+    balance: "9,000.00",
+    currency: "Php",
+    icon: "cash",
+    color: "#16A34A",
+    backgroundColor: "#D1FAE5",
+  },
+  {
+    id: "2",
+    name: "Bank Account",
+    balance: "50,000.00",
+    currency: "Php",
+    icon: "bank",
+    color: "#4F46E5",
+    backgroundColor: "#E0E7FF",
+  },
+  {
+    id: "3",
+    name: "Credit Card",
+    balance: "15,000.00",
+    currency: "Php",
+    icon: "credit-card",
+    color: "#3B82F6",
+    backgroundColor: "#DBEAFE",
+  },
+];
 
 const CreateTransaction = () => {
   const [transactionType, setTransactionType] = useState("Expenses");
@@ -20,6 +104,20 @@ const CreateTransaction = () => {
   const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [isAccountModalVisible, setAccountModalVisible] = useState(false);
+
+  const handleSelectCategory = (category) => {
+    setSelectedCategory(category);
+    setCategoryModalVisible(false);
+  };
+
+  const handleSelectAccount = (account) => {
+    setSelectedAccount(account);
+    setAccountModalVisible(false);
+  };
 
   const handleSaveTransaction = () => {
     // Here you can collect all the state and process it, e.g., send to an API or save to local storage.
@@ -28,7 +126,8 @@ const CreateTransaction = () => {
       amount: parseFloat(amount) || 0,
       description,
       date,
-      // category and account would be added here once implemented
+      category: selectedCategory,
+      account: selectedAccount,
     });
   };
 
@@ -172,42 +271,67 @@ const CreateTransaction = () => {
         {/* Category */}
         <Card style={{ padding: 10 }}>
           <Text style={styles.transactionCategoryLabel}>Category</Text>
-          <View style={styles.selectCategory}>
-            <View style={styles.selectedCategory}>
-              <View style={styles.selectedCategoryIconContainer}>
-                <Icon
-                  name={"silverware-fork-knife"}
-                  size={16}
-                  color="#D62828"
-                />
+          <Pressable
+            onPress={() => setCategoryModalVisible(true)}
+            style={styles.selectCategory}
+          >
+            {selectedCategory ? (
+              <View style={styles.selectedCategory}>
+                <View
+                  style={[
+                    styles.selectedCategoryIconContainer,
+                    { backgroundColor: selectedCategory.backgroundColor },
+                  ]}
+                >
+                  <Icon
+                    name={selectedCategory.icon}
+                    size={16}
+                    color={selectedCategory.color}
+                  />
+                </View>
+                <Text>{selectedCategory.name}</Text>
               </View>
-              <Text>Food & Dining</Text>
-            </View>
+            ) : (
+              <Text style={styles.placeholderText}>Select a category</Text>
+            )}
             <Icon name="chevron-right" size={24} />
-          </View>
+          </Pressable>
         </Card>
 
         <Spacer />
         {/* Account */}
         <Card style={{ padding: 15 }}>
           <Text style={styles.transactionCategoryLabel}>Account</Text>
-          <View style={styles.selectCategory}>
-            <View style={styles.selectedCategory}>
-              <View
-                style={[
-                  styles.selectedCategoryIconContainer,
-                  { backgroundColor: "#DBEAFE" },
-                ]}
-              >
-                <Icon name={"credit-card"} size={16} color="#3B82F6" />
+          <Pressable
+            onPress={() => setAccountModalVisible(true)}
+            style={styles.selectCategory}
+          >
+            {selectedAccount ? (
+              <View style={styles.selectedCategory}>
+                <View
+                  style={[
+                    styles.selectedCategoryIconContainer,
+                    { backgroundColor: selectedAccount.backgroundColor },
+                  ]}
+                >
+                  <Icon
+                    name={selectedAccount.icon}
+                    size={16}
+                    color={selectedAccount.color}
+                  />
+                </View>
+                <View>
+                  <Text>{selectedAccount.name}</Text>
+                  <Text style={styles.accountBalanceText}>
+                    {selectedAccount.currency} {selectedAccount.balance}
+                  </Text>
+                </View>
               </View>
-              <View>
-                <Text>Cash</Text>
-                <Text>Php 9,000.00</Text>
-              </View>
-            </View>
+            ) : (
+              <Text style={styles.placeholderText}>Select an account</Text>
+            )}
             <Icon name="chevron-right" size={24} />
-          </View>
+          </Pressable>
         </Card>
         <Spacer />
         {/* Date */}
@@ -254,6 +378,91 @@ const CreateTransaction = () => {
           <Text style={styles.saveButtonText}>Save Transaction</Text>
         </Pressable>
       </View>
+
+      {/* Category Selection Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCategoryModalVisible}
+        onRequestClose={() => setCategoryModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select a Category</Text>
+            <FlatList
+              data={categories}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <Pressable
+                  style={styles.categoryItem}
+                  onPress={() => handleSelectCategory(item)}
+                >
+                  <View
+                    style={[
+                      styles.selectedCategoryIconContainer,
+                      { backgroundColor: item.backgroundColor },
+                    ]}
+                  >
+                    <Icon name={item.icon} size={16} color={item.color} />
+                  </View>
+                  <Text style={styles.categoryItemText}>{item.name}</Text>
+                </Pressable>
+              )}
+            />
+            <Pressable
+              style={styles.closeButton}
+              onPress={() => setCategoryModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Account Selection Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isAccountModalVisible}
+        onRequestClose={() => setAccountModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select an Account</Text>
+            <FlatList
+              data={accounts}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <Pressable
+                  style={styles.categoryItem}
+                  onPress={() => handleSelectAccount(item)}
+                >
+                  <View
+                    style={[
+                      styles.selectedCategoryIconContainer,
+                      { backgroundColor: item.backgroundColor },
+                    ]}
+                  >
+                    <Icon name={item.icon} size={16} color={item.color} />
+                  </View>
+                  <View style={styles.accountItemDetails}>
+                    <Text style={styles.categoryItemText}>{item.name}</Text>
+                    <Text style={styles.accountBalanceText}>
+                      {item.currency} {item.balance}
+                    </Text>
+                  </View>
+                </Pressable>
+              )}
+            />
+            <Pressable
+              style={styles.closeButton}
+              onPress={() => setAccountModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -382,5 +591,60 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  placeholderText: {
+    color: "#9CA3AF",
+    fontSize: 16,
+    paddingVertical: 10,
+  },
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    height: "60%",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  categoryItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F3F4F6",
+  },
+  categoryItemText: {
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  closeButton: {
+    backgroundColor: "#E5E7EB",
+    padding: 15,
+    borderRadius: 15,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  closeButtonText: {
+    color: "#1F2937",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  accountBalanceText: {
+    color: "#6B7280",
+    fontSize: 12,
+  },
+  accountItemDetails: {
+    flex: 1,
+    marginLeft: 10,
   },
 });
