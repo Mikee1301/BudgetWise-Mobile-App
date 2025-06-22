@@ -5,17 +5,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
+import Icon from "../../components/common/Icon";
 const { width } = Dimensions.get("window");
 
 interface QuickActionButtonProps {
   title: string;
-  icon: React.ReactNode;
+  icon: string;
   color: string;
   onPress: () => void;
 }
 
-export function QuickActionButton({
+export default function QuickActionButton({
   title,
   icon,
   color,
@@ -28,7 +28,7 @@ export function QuickActionButton({
       activeOpacity={0.7}
     >
       <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
-        {icon}
+        <Icon name={icon} size={24} color={color} />
       </View>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
