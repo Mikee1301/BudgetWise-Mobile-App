@@ -2,6 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { ArrowLeftRight, Minus, Plus } from "lucide-react-native";
 import { useState } from "react";
 import {
+  Alert,
   FlatList,
   Modal,
   Platform,
@@ -107,7 +108,10 @@ const CreateTransaction = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
+  const [selectedAccountToTransfer, setSelectedAccountToTransfer] =
+    useState(null);
   const [isAccountModalVisible, setAccountModalVisible] = useState(false);
+  const [accountModalTarget, setAccountModalTarget] = useState(null); // 'from' or 'to'
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
@@ -115,8 +119,30 @@ const CreateTransaction = () => {
   };
 
   const handleSelectAccount = (account) => {
-    setSelectedAccount(account);
+    if (accountModalTarget === "from") {
+      if (
+        transactionType === "Transfer" &&
+        selectedAccountToTransfer?.id === account.id
+      ) {
+        Alert.alert(
+          "Invalid Selection",
+          "From and To accounts cannot be the same."
+        );
+        return;
+      }
+      setSelectedAccount(account);
+    } else if (accountModalTarget === "to") {
+      if (selectedAccount?.id === account.id) {
+        Alert.alert(
+          "Invalid Selection",
+          "From and To accounts cannot be the same."
+        );
+        return;
+      }
+      setSelectedAccountToTransfer(account);
+    }
     setAccountModalVisible(false);
+    setAccountModalTarget(null);
   };
 
   const handleSaveTransaction = () => {
@@ -301,9 +327,14 @@ const CreateTransaction = () => {
         <Spacer />
         {/* Account */}
         <Card style={{ padding: 15 }}>
-          <Text style={styles.transactionCategoryLabel}>Account</Text>
+          <Text style={styles.transactionCategoryLabel}>
+            {transactionType === "Transfer" ? "From" : "Source"}
+          </Text>
           <Pressable
-            onPress={() => setAccountModalVisible(true)}
+            onPress={() => {
+              setAccountModalTarget("from");
+              setAccountModalVisible(true);
+            }}
             style={styles.selectCategory}
           >
             {selectedAccount ? (
@@ -333,6 +364,49 @@ const CreateTransaction = () => {
             <Icon name="chevron-right" size={24} />
           </Pressable>
         </Card>
+
+        {transactionType === "Transfer" && (
+          <Card style={{ padding: 15, marginTop: 15 }}>
+            <Text style={styles.transactionCategoryLabel}>To</Text>
+            <Pressable
+              onPress={() => {
+                setAccountModalTarget("to");
+                setAccountModalVisible(true);
+              }}
+              style={styles.selectCategory}
+            >
+              {selectedAccountToTransfer ? (
+                <View style={styles.selectedCategory}>
+                  <View
+                    style={[
+                      styles.selectedCategoryIconContainer,
+                      {
+                        backgroundColor:
+                          selectedAccountToTransfer.backgroundColor,
+                      },
+                    ]}
+                  >
+                    <Icon
+                      name={selectedAccountToTransfer.icon}
+                      size={16}
+                      color={selectedAccountToTransfer.color}
+                    />
+                  </View>
+                  <View>
+                    <Text>{selectedAccountToTransfer.name}</Text>
+                    <Text style={styles.accountBalanceText}>
+                      {selectedAccountToTransfer.currency}{" "}
+                      {selectedAccountToTransfer.balance}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <Text style={styles.placeholderText}>Select an account</Text>
+              )}
+              <Icon name="chevron-right" size={24} />
+            </Pressable>
+          </Card>
+        )}
         <Spacer />
         {/* Date */}
         <Card style={{ padding: 15 }}>
