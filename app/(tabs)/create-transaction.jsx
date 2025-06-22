@@ -17,57 +17,9 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 
-const categories = [
-  {
-    id: "1",
-    name: "Food & Dining",
-    icon: "silverware-fork-knife",
-    color: "#D62828",
-    backgroundColor: "#FEE2E2",
-  },
-  {
-    id: "2",
-    name: "Shopping",
-    icon: "shopping-outline",
-    color: "#0077B6",
-    backgroundColor: "#E0F7FA",
-  },
-  {
-    id: "3",
-    name: "Transportation",
-    icon: "bus",
-    color: "#FCBF49",
-    backgroundColor: "#FFFBEA",
-  },
-  {
-    id: "4",
-    name: "Housing",
-    icon: "home-outline",
-    color: "#003049",
-    backgroundColor: "#E0E7FF",
-  },
-  {
-    id: "5",
-    name: "Utilities",
-    icon: "lightbulb-on-outline",
-    color: "#F77F00",
-    backgroundColor: "#FFF3E0",
-  },
-  {
-    id: "6",
-    name: "Health",
-    icon: "heart-pulse",
-    color: "#E63946",
-    backgroundColor: "#FEE2E2",
-  },
-  {
-    id: "7",
-    name: "Entertainment",
-    icon: "movie-open-outline",
-    color: "#457B9D",
-    backgroundColor: "#E0F7FA",
-  },
-];
+// Data
+import { categories } from "../../data/categories";
+// import { accounts } from "../../data/accounts";
 
 const accounts = [
   {
