@@ -9,8 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import AppBar from "../../components/common/AppBar";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 
@@ -196,9 +194,8 @@ const Accounts = () => {
     setNewAccountCategory(filterItem[1]);
   }; // This reset is now primarily for the edit modal
   return (
-    <SafeAreaView style={[styles.container, { flex: 1 }]}>
-      <AppBar />
-      <Spacer height={10} />
+    <View style={[styles.container, { flex: 1 }]}>
+      {/* <AppBar /> */}
       <View style={styles.filterContainer}>
         <Animated.View
           style={[
@@ -374,7 +371,7 @@ const Accounts = () => {
           </View>
         </Pressable>
       </Modal> */}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -402,6 +399,7 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: "#f3f4f6",
     margin: "auto",
+    marginTop: 20,
     borderRadius: 10,
     position: "relative",
   },

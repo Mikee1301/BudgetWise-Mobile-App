@@ -1,31 +1,26 @@
 import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  ArrowDownLeft,
-  ArrowUpRight,
-  Briefcase,
-  Coffee,
-  CreditCard,
-  DollarSign,
-  PiggyBank,
-  RefreshCcw,
-  ShoppingCart,
-  Zap,
-} from "lucide-react-native";
-import {
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import AppBar from "../../components/common/AppBar";
+
+// Components
+import Icon from "../../components/common/Icon";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
+import AppBar from "../../components/common/AppBar";
 import BalanceCard from "../../components/dashboard/BalanceCard";
-import { QuickActionButton } from "../../components/dashboard/QuickActionsButtons";
-import { TransactionItem } from "../../components/dashboard/TransactionItem";
+import QuickActionButton from "../../components/dashboard/QuickActionsButtons";
+
+// Data
+import { accounts } from "../../data/accounts";
+import { transactions } from "../../data/transactions";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -34,95 +29,20 @@ const Dashboard = () => {
     {
       id: 1,
       title: "Income",
-      icon: <ArrowUpRight size={24} color="#10B981" strokeWidth={2} />,
+      icon: "ArrowUp",
       color: "#10B981",
     },
     {
       id: 2,
       title: "Expense",
-      icon: <ArrowDownLeft size={24} color="#EF4444" strokeWidth={2} />,
+      icon: "ArrowDown",
       color: "#EF4444",
     },
     {
       id: 3,
       title: "Transfer",
-      icon: <RefreshCcw size={24} color="#6366F1" strokeWidth={2} />,
+      icon: "RefreshCcw",
       color: "#6366F1",
-    },
-  ];
-
-  const accounts = [
-    {
-      id: 1,
-      name: "Savings",
-      balance: 1000000,
-      icon: <PiggyBank size={24} color="#10B981" strokeWidth={2} />,
-      accountNo: 1234567,
-    },
-    {
-      id: 2,
-      name: "BPI",
-      balance: 12485,
-      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
-      accountNo: 1234567,
-    },
-    {
-      id: 3,
-      name: "BPI",
-      balance: 12485,
-      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
-      accountNo: 1234567,
-    },
-  ];
-
-  const transactions = [
-    {
-      id: 1,
-      name: "Grocery Shopping",
-      date: "2025-06-12",
-      category: "Groceries",
-      icon: <ShoppingCart size={24} color="#EF4444" strokeWidth={2} />, // Groceries icon
-      amount: -1500.75, // Negative for expense
-    },
-    {
-      id: 2,
-      name: "Salary",
-      date: "2025-06-10",
-      category: "Income",
-      icon: <DollarSign size={24} color="#10B981" strokeWidth={2} />, // Income icon
-      amount: 50000.0, // Positive for income
-    },
-    {
-      id: 3,
-      name: "Electric Bill",
-      date: "2025-06-08",
-      category: "Utilities",
-      icon: <Zap size={24} color="#F59E0B" strokeWidth={2} />, // Utilities icon
-      amount: -3500.0, // Negative for expense
-    },
-    {
-      id: 4,
-      name: "Dining Out",
-      date: "2025-06-07",
-      category: "Food & Drinks",
-      icon: <Coffee size={24} color="#EF4444" strokeWidth={2} />, // Food & Drinks icon
-      amount: -1200.0, // Negative for expense
-    },
-    {
-      id: 5,
-      name: "Freelance Payment",
-      date: "2025-06-05",
-      category: "Income",
-      icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />, // Freelance Payment icon
-      amount: 15000.0, // Positive for income
-    },
-    {
-      id: 6,
-      name: "Freelance Payment",
-      date: "2025-06-05",
-      category: "Income",
-      icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />, // Freelance Payment icon
-      amount: 15000.0, // Positive for income
     },
   ];
 
@@ -180,7 +100,13 @@ const Dashboard = () => {
             >
               <View style={styles.accountContainer}>
                 <View style={styles.accountInfoWrapper}>
-                  <View style={styles.accountIcon}>{account.icon}</View>
+                  <View style={styles.accountIcon}>
+                    <Icon
+                      name={account.icon}
+                      size={24}
+                      color={account.iconColor}
+                    />
+                  </View>
                   <View style={styles.accountInfo}>
                     <Text style={styles.accountInfoName}>{account.name}</Text>
                     <Text style={styles.accountInfoNo}>
@@ -195,25 +121,59 @@ const Dashboard = () => {
             </Card>
           ))}
         </View>
-
+        <Spacer height={20} />
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recent Transactions</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("transactions")}
+            >
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-
-          <Card style={styles.transactionsCard}>
-            {transactions.slice(0, 5).map((transaction, index) => (
-              <View key={transaction.id}>
-                <TransactionItem transaction={transaction} />
-                {index < transactions.length - 1 && (
-                  <View style={styles.transactionSeparator} />
-                )}
-              </View>
-            ))}
-          </Card>
+          <Spacer height={5} />
+          <FlatList
+            data={transactions.slice(0, 5)}
+            scrollEnabled={false}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Card
+                style={[styles.transactionCard, { borderRadius: 0 }]}
+                onPress={() => {
+                  console.log(item);
+                }}
+              >
+                <View style={styles.transactionItem}>
+                  <View style={styles.transactionIconContainer}>
+                    <Icon name={item.icon} size={24} color={item.iconColor} />
+                  </View>
+                  <View style={styles.transactionDetails}>
+                    <Text style={styles.transactionName}>{item.name}</Text>
+                    <Text style={styles.transactionCategory}>
+                      {item.category}
+                    </Text>
+                  </View>
+                  <View style={styles.transactionAmountContainer}>
+                    <Text
+                      style={[
+                        styles.transactionAmount,
+                        item.type === "income"
+                          ? styles.incomeAmount
+                          : styles.expenseAmount,
+                      ]}
+                    >
+                      {item.type === "income" ? "+" : "-"}₱
+                      {Math.abs(item.amount).toLocaleString("en-US")}
+                    </Text>
+                    <Text style={styles.transactionDate}>{item.date}</Text>
+                  </View>
+                </View>
+              </Card>
+            )}
+            ListHeaderComponent={<Spacer height={5} />}
+            ListFooterComponent={<Spacer height={80} />} // To avoid FAB overlap
+            showsVerticalScrollIndicator={false}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -305,5 +265,63 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#F3F4F6",
     marginLeft: 60,
+  },
+  transactionListContainer: {
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    paddingVertical: 10,
+  },
+  transactionListHeader: {
+    marginBottom: 10,
+  },
+  transactionListHeaderText: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#374151",
+  },
+  transactionCard: {
+    paddingHorizontal: 20,
+  },
+  transactionItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  transactionIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#F3F4F6",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  transactionDetails: {
+    flex: 1,
+    marginRight: 10,
+  },
+  transactionName: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#1F2937",
+  },
+  transactionCategory: {
+    fontSize: 12,
+    color: "#6B7280",
+    marginTop: 2,
+  },
+  transactionAmountContainer: {
+    alignItems: "flex-end",
+  },
+  transactionAmount: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  incomeAmount: { color: "#10B981" },
+  expenseAmount: { color: "#EF4444" },
+  transactionDate: {
+    fontSize: 11,
+    color: "#9CA3AF",
+    marginTop: 2,
   },
 });
