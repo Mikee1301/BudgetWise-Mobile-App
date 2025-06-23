@@ -7,6 +7,8 @@ export const transactions = [
     icon: "ShoppingCart",
     iconColor: "#EF4444",
     amount: -1500.75,
+    account: "Cash",
+    notes: "Bought weekly groceries at the supermarket",
   },
   {
     id: 2,
@@ -16,6 +18,8 @@ export const transactions = [
     icon: "DollarSign",
     iconColor: "#10B981",
     amount: 50000.0,
+    account: "Cash",
+    notes: "Monthly salary credited",
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ export const transactions = [
     icon: "Zap",
     iconColor: "#F59E0B",
     amount: -3500.0,
+    account: "Cash",
+    notes: "Paid June electric bill",
   },
   {
     id: 4,
@@ -34,6 +40,8 @@ export const transactions = [
     icon: "Coffee",
     iconColor: "#EF4444",
     amount: -1200.0,
+    account: "Cash",
+    notes: "Dinner at a restaurant",
   },
   {
     id: 5,
@@ -43,6 +51,8 @@ export const transactions = [
     icon: "Briefcase",
     iconColor: "#10B981",
     amount: 15000.0,
+    account: "Cash",
+    notes: "Payment for freelance project",
   },
   {
     id: 6,
@@ -52,5 +62,7 @@ export const transactions = [
     icon: "Briefcase",
     iconColor: "#10B981",
     amount: 15000.0,
+    account: "Cash",
+    notes: "Payment for another freelance project",
   },
 ];
