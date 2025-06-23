@@ -13,43 +13,43 @@ import {
   TextInput,
   View,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "../../components/common/Icon";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 
 // Data
 import { categories } from "../../data/categories";
-// import { accounts } from "../../data/accounts";
+import { accounts } from "../../data/accounts";
 
-const accounts = [
-  {
-    id: "1",
-    name: "Cash",
-    balance: "9,000.00",
-    currency: "Php",
-    icon: "cash",
-    color: "#16A34A",
-    backgroundColor: "#D1FAE5",
-  },
-  {
-    id: "2",
-    name: "Bank Account",
-    balance: "50,000.00",
-    currency: "Php",
-    icon: "bank",
-    color: "#4F46E5",
-    backgroundColor: "#E0E7FF",
-  },
-  {
-    id: "3",
-    name: "Credit Card",
-    balance: "15,000.00",
-    currency: "Php",
-    icon: "credit-card",
-    color: "#3B82F6",
-    backgroundColor: "#DBEAFE",
-  },
-];
+// const accounts = [
+//   {
+//     id: "1",
+//     name: "Cash",
+//     balance: "9,000.00",
+//     currency: "Php",
+//     icon: "cash",
+//     color: "#16A34A",
+//     backgroundColor: "#D1FAE5",
+//   },
+//   {
+//     id: "2",
+//     name: "Bank Account",
+//     balance: "50,000.00",
+//     currency: "Php",
+//     icon: "bank",
+//     color: "#4F46E5",
+//     backgroundColor: "#E0E7FF",
+//   },
+//   {
+//     id: "3",
+//     name: "Credit Card",
+//     balance: "15,000.00",
+//     currency: "Php",
+//     icon: "credit-card",
+//     color: "#3B82F6",
+//     backgroundColor: "#DBEAFE",
+//   },
+// ];
 
 const CreateTransaction = () => {
   const [transactionType, setTransactionType] = useState("Expenses");
@@ -235,7 +235,7 @@ const CreateTransaction = () => {
                 { backgroundColor: "#E5E7EB" },
               ]}
             >
-              <Icon name="pencil-outline" size={16} color="#4B5563" />
+              <Icon name="Pencil" size={16} color="#4B5563" />
             </View>
             <TextInput
               style={styles.descriptionInput}
@@ -374,7 +374,7 @@ const CreateTransaction = () => {
                   { backgroundColor: "#E0E7FF" },
                 ]}
               >
-                <Icon name="calendar-month-outline" size={16} color="#4F46E5" />
+                <Icon name="Calendar" size={16} color="#4F46E5" />
               </View>
               <Text>{date.toLocaleDateString()}</Text>
             </View>

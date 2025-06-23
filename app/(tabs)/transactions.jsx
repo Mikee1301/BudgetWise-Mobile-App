@@ -1,24 +1,14 @@
-import {
-  ArrowDown,
-  ArrowUp,
-  Briefcase, // Added for new transaction
-  Coffee,
-  DollarSign, // Used for Income/Investments
-  Gift, // Added for new transaction
-  Home, // Added for new transaction
-  Plane, // Added for new transaction
-  PlusCircle, // Added for new transaction (Transfer)
-  ShoppingCart,
-  Smile, // Added for new transaction
-  Train, // Added for new transaction
-  Zap,
-} from "lucide-react-native";
 import { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
+// Components
+import Icon from "../../components/common/Icon";
 import Card from "../../components/common/Card";
 import Dropdown from "../../components/common/Dropdown";
 import Spacer from "../../components/common/Spacer";
+
+// Data
+import { transactions } from "../../data/transactions";
 
 const Transactions = () => {
   const [dateFilter, setDateFilter] = useState("Today");
@@ -54,121 +44,7 @@ const Transactions = () => {
 
   const totalIncome = 80000;
   const totalExpenses = 20000;
-
-  // Sample transactions data (replace with your actual data source)
-  const transactionsData = [
-    {
-      id: "1",
-      name: "Grocery Shopping",
-      date: "2024-07-28",
-      category: "Groceries",
-      icon: <ShoppingCart size={24} color="#EF4444" strokeWidth={2} />,
-      amount: -150.75,
-      type: "expense",
-    },
-    {
-      id: "2",
-      name: "Salary",
-      date: "2024-07-27",
-      category: "Income",
-      icon: <DollarSign size={24} color="#10B981" strokeWidth={2} />,
-      amount: 5000.0,
-      type: "income",
-    },
-    {
-      id: "3",
-      name: "Electric Bill",
-      date: "2024-07-26",
-      category: "Utilities",
-      icon: <Zap size={24} color="#F59E0B" strokeWidth={2} />,
-      amount: -75.0,
-      type: "expense",
-    },
-    {
-      id: "4",
-      name: "Coffee Shop",
-      date: "2024-07-25",
-      category: "Food & Drink",
-      icon: <Coffee size={24} color="#EF4444" strokeWidth={2} />,
-      amount: -5.5,
-      type: "expense",
-    },
-    {
-      id: "5",
-      name: "Freelance Project",
-      date: "2024-07-24",
-      category: "Income",
-      icon: <Briefcase size={24} color="#10B981" strokeWidth={2} />,
-      amount: 750.0,
-      type: "income",
-    },
-    {
-      id: "6",
-      name: "Train Ticket",
-      date: "2024-07-23",
-      category: "Transportation",
-      icon: <Train size={24} color="#F59E0B" strokeWidth={2} />,
-      amount: -25.0,
-      type: "expense",
-    },
-    {
-      id: "7",
-      name: "Birthday Gift",
-      date: "2024-07-22",
-      category: "Gifts",
-      icon: <Gift size={24} color="#EF4444" strokeWidth={2} />,
-      amount: -50.0,
-      type: "expense",
-    },
-    {
-      id: "8",
-      name: "Stock Dividend",
-      date: "2024-07-21",
-      category: "Investments",
-      icon: <DollarSign size={24} color="#10B981" strokeWidth={2} />,
-      amount: 120.0,
-      type: "income",
-    },
-    {
-      id: "9",
-      name: "Rent Payment",
-      date: "2024-07-20",
-      category: "Housing",
-      icon: <Home size={24} color="#F59E0B" strokeWidth={2} />,
-      amount: -800.0,
-      type: "expense",
-    },
-    {
-      id: "10",
-      name: "Movie Tickets",
-      date: "2024-07-19",
-      category: "Entertainment",
-      icon: <Smile size={24} color="#EF4444" strokeWidth={2} />,
-      amount: -30.0,
-      type: "expense",
-    },
-    {
-      id: "11",
-      name: "Transfer to Savings",
-      date: "2024-07-18",
-      category: "Transfer",
-      icon: <PlusCircle size={24} color="#6366F1" strokeWidth={2} />,
-      amount: -200.0, // Amount moved out of this account
-      type: "transfer", // Added 'transfer' type
-    },
-    {
-      id: "12",
-      name: "Travel Fund Deposit",
-      date: "2024-07-18",
-      category: "Transfer",
-      icon: <Plane size={24} color="#6366F1" strokeWidth={2} />,
-      amount: 200.0, // Amount moved into this account
-      type: "transfer", // Added 'transfer' type
-    },
-  ];
-
-  // TODO: Filter transactionsData based on dateFilter, categoryFilter, and activeGroupBy
-  const filteredTransactions = transactionsData;
+  const currenySymbol = "₱";
 
   return (
     <View style={styles.mainContainer}>
@@ -223,11 +99,11 @@ const Transactions = () => {
               <View>
                 <Text style={styles.cardSummaryLabel}>Total Income</Text>
                 <Text style={[styles.cardSummaryValue, { color: "#10B981" }]}>
-                  ₱ {totalIncome.toLocaleString("en-US")}
+                  {currenySymbol} {totalIncome.toLocaleString("en-US")}
                 </Text>
               </View>
               <View style={styles.statIcon}>
-                <ArrowUp size={16} color="#10B981" strokeWidth={2} />
+                <Icon name="ArrowUp" size={24} color="#10B981" />
               </View>
             </View>
           </Card>
@@ -236,11 +112,11 @@ const Transactions = () => {
               <View>
                 <Text style={styles.cardSummaryLabel}>Total Expenses</Text>
                 <Text style={[styles.cardSummaryValue, { color: "#EF4444" }]}>
-                  ₱ {totalExpenses.toLocaleString("en-US")}
+                  {currenySymbol} {totalExpenses.toLocaleString("en-US")}
                 </Text>
               </View>
               <View style={[styles.statIcon, { backgroundColor: "#FEE2E2" }]}>
-                <ArrowDown size={16} color="#EF4444" strokeWidth={2} />
+                <Icon name="ArrowDown" size={24} color="#EF4444" />
               </View>
             </View>
           </Card>
@@ -253,7 +129,7 @@ const Transactions = () => {
             <Text style={styles.transactionListHeaderText}>{dateFilter}</Text>
           </View>
           <FlatList
-            data={filteredTransactions}
+            data={transactions}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <Card
@@ -264,7 +140,7 @@ const Transactions = () => {
               >
                 <View style={styles.transactionItem}>
                   <View style={styles.transactionIconContainer}>
-                    {item.icon}
+                    <Icon name={item.icon} size={24} color={item.iconColor} />
                   </View>
                   <View style={styles.transactionDetails}>
                     <Text style={styles.transactionName}>{item.name}</Text>
@@ -290,7 +166,7 @@ const Transactions = () => {
               </Card>
             )}
             ListHeaderComponent={<Spacer height={5} />}
-            ListFooterComponent={<Spacer height={80} />} // To avoid FAB overlap
+            ListFooterComponent={<Spacer height={80} />}
             showsVerticalScrollIndicator={false}
           />
         </View>
@@ -303,8 +179,8 @@ export default Transactions;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1, // Make the main container take full height
-    backgroundColor: "#FFFFFF", // Or your desired overall background
+    flex: 1,
+    backgroundColor: "#FFFFFF",
   },
   filterSection: {
     backgroundColor: "#FFFFFF",
@@ -348,8 +224,7 @@ const styles = StyleSheet.create({
   },
   transactionSection: {
     backgroundColor: "#F9FAFB",
-    flex: 1, // Allow this section to grow and enable FlatList scrolling
-    // backgroundColor: "red",
+    flex: 1,
   },
   cardSummaryContainer: {
     flexDirection: "row",
@@ -365,7 +240,6 @@ const styles = StyleSheet.create({
   },
   cardSummaryLabel: {
     fontSize: 13,
-    // fontWeight: "600",
     color: "#111827",
   },
   cardSummaryValue: {
@@ -383,11 +257,9 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   transactionListContainer: {
-    // flex: 1, // Ensure this container also expands
     paddingHorizontal: 15,
     marginBottom: 20,
     paddingVertical: 10,
-    // backgroundColor: "red",
   },
   transactionListHeader: {
     marginBottom: 10,
@@ -398,8 +270,6 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
   transactionCard: {
-    // marginBottom: 10,
-    // paddingVertical: 12,
     paddingHorizontal: 10,
   },
   transactionItem: {
@@ -411,13 +281,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6", // Light gray background for icon
+    backgroundColor: "#F3F4F6",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
   },
   transactionDetails: {
-    flex: 1, // Allows text to take available space and wrap if needed
+    flex: 1,
     marginRight: 10,
   },
   transactionName: {
@@ -437,8 +307,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-  incomeAmount: { color: "#10B981" }, // Green for income
-  expenseAmount: { color: "#EF4444" }, // Red for expenses
+  incomeAmount: { color: "#10B981" },
+  expenseAmount: { color: "#EF4444" },
   transactionDate: {
     fontSize: 11,
     color: "#9CA3AF",

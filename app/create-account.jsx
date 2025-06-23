@@ -114,7 +114,6 @@ const CreateAccountScreen = () => {
         />
 
         <Text style={styles.label}>Account Type:</Text>
-        <Text style={styles.label}>Category:</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={category}

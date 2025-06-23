@@ -6,6 +6,7 @@ export const accounts = [
     icon: "PiggyBank",
     iconColor: "#10B981",
     accountNo: 1234567,
+    accountType: "Cards",
   },
   {
     id: 2,
@@ -14,13 +15,15 @@ export const accounts = [
     icon: "CreditCard",
     iconColor: "#6366F1",
     accountNo: 1234567,
+    accountType: "Banks",
   },
   {
     id: 3,
-    name: "BPI",
+    name: "Wallet",
     balance: 12485,
     icon: "CreditCard",
     iconColor: "#6366F1",
     accountNo: 1234567,
+    accountType: "Cash",
   },
 ];

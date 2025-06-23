@@ -1,115 +1,47 @@
-import { useRouter } from "expo-router"; // Import useRouter
+import { useRouter } from "expo-router";
 import { CreditCard, PiggyBank, Plus } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   FlatList,
-  StyleSheet, // Import Button for simplicity, or use TouchableOpacity
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+// Components
+import Icon from "../../components/common/Icon";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 
+// Data
+import { accounts } from "../../data/accounts";
+
 const Accounts = () => {
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
   const [selectedFilter, setSelectedFilter] = useState("All");
   const filterItem = ["All", "Banks", "Cards", "Cash"];
+  const [initialLayoutDone, setInitialLayoutDone] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editingAccount, setEditingAccount] = useState(null);
+
+  // Animation states
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const sliderPositionX = useRef(new Animated.Value(0)).current;
   const sliderWidth = useRef(new Animated.Value(0)).current;
-  const layoutsRef = useRef({}); // To store x and width of each filter item
-  const [initialLayoutDone, setInitialLayoutDone] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editingAccount, setEditingAccount] = useState(null); // To store the account being edited
+  const layoutsRef = useRef({});
 
   // State for new account form
   const [newAccountName, setNewAccountName] = useState("");
   const [newAccountBalance, setNewAccountBalance] = useState("");
   const [newAccountNo, setNewAccountNo] = useState("");
-  const [newAccountCategory, setNewAccountCategory] = useState(filterItem[1]); // Default to 'Banks' or first category
-
-  const accounts = [
-    {
-      id: 1,
-      name: "Savings",
-      balance: 1000000,
-      icon: <PiggyBank size={24} color="#10B981" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Banks",
-    },
-    {
-      id: 2,
-      name: "BPI",
-      balance: 12485,
-      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Cards",
-    },
-    {
-      id: 3,
-      name: "GCash",
-      balance: 12485,
-      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Cash", // Example for Cash
-    },
-    {
-      id: 4,
-      name: "UnionBank",
-      balance: 12485,
-      icon: <PiggyBank size={24} color="#10B981" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Banks",
-    },
-    {
-      id: 5,
-      name: "Metrobank Card",
-      balance: 1000000,
-      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Cards",
-    },
-    {
-      id: 6,
-      name: "Wallet",
-      balance: 1000000,
-      icon: <CreditCard size={24} color="#F59E0B" strokeWidth={2} />, // Example for Cash icon
-      accountNo: 1234567,
-      category: "Cash",
-    },
-    {
-      id: 7,
-      name: "BDO Savings",
-      balance: 1000000,
-      icon: <PiggyBank size={24} color="#10B981" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Banks",
-    },
-    {
-      id: 8,
-      name: "EastWest Card",
-      balance: 1000000,
-      icon: <CreditCard size={24} color="#6366F1" strokeWidth={2} />,
-      accountNo: 1234567,
-      category: "Cards",
-    },
-    {
-      id: 9,
-      name: "PayMaya",
-      balance: 1000000,
-      icon: <CreditCard size={24} color="#F59E0B" strokeWidth={2} />, // Example for Cash icon
-      accountNo: 1234567,
-      category: "Cash",
-    },
-  ];
+  const [newAccountCategory, setNewAccountCategory] = useState(filterItem[1]);
 
   const filteredAccounts = useMemo(() => {
     if (selectedFilter === "All") {
       return accounts;
     }
-    return accounts.filter((account) => account.category === selectedFilter);
+    return accounts.filter((account) => account.accountType === selectedFilter);
   }, [accounts, selectedFilter]);
 
   useEffect(() => {
@@ -259,7 +191,13 @@ const Accounts = () => {
             >
               <View style={[styles.accountContainer, { marginTop: 15 }]}>
                 <View style={styles.accountInfoWrapper}>
-                  <View style={styles.accountIcon}>{account.icon}</View>
+                  <View style={styles.accountIcon}>
+                    <Icon
+                      name={account.icon}
+                      size={24}
+                      color={account.iconColor}
+                    />
+                  </View>
                   <View style={styles.accountInfo}>
                     <Text style={styles.accountInfoName}>{account.name}</Text>
                     <Text style={styles.accountInfoNo}>
@@ -283,94 +221,10 @@ const Accounts = () => {
       {/* Create Account Button */}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => router.push("/create-account")} // Navigate to the new screen
+        onPress={() => router.push("/create-account")}
       >
         <Plus size={28} color="#fff" />
       </TouchableOpacity>
-      {/* <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-          resetFormAndEditingState();
-        }}
-      >
-        <Pressable
-          style={styles.modalOverlay}
-          onPress={() => setModalVisible(false)}
-        >
-          <View
-            style={styles.modalContent}
-            onStartShouldSetResponder={() => true}
-          >
-            <Text style={styles.modalTitle}>Edit Account</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Account Name (e.g., Savings, BPI Credit)"
-              value={newAccountName}
-              onChangeText={setNewAccountName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Balance (e.g., 10000)"
-              keyboardType="numeric"
-              value={newAccountBalance}
-              onChangeText={setNewAccountBalance}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Account Number (last 4 digits if preferred)"
-              keyboardType="numeric"
-              value={newAccountNo}
-              onChangeText={setNewAccountNo}
-            />
-            <Text style={styles.label}>Category:</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={newAccountCategory}
-                style={styles.picker}
-                onValueChange={(itemValue, itemIndex) =>
-                  setNewAccountCategory(itemValue)
-                }
-              >
-                {filterItem.slice(1).map((cat) => (
-                  <Picker.Item key={cat} label={cat} value={cat} />
-                ))}
-              </Picker>
-            </View>
-            <Pressable
-              style={[styles.modalButton, styles.saveButton]}
-              onPress={handleSaveAccount}
-            >
-              <Text style={styles.modalButtonText}>Update Account</Text>
-            </Pressable>
-            <Spacer height={10} />
-            {editingAccount && (
-              <>
-                <Pressable
-                  style={[styles.modalButton, styles.deleteButton]}
-                  onPress={handleDeleteAccount}
-                >
-                  <Text style={styles.modalButtonText}>Delete Account</Text>
-                </Pressable>
-                <Spacer height={10} />
-              </>
-            )}
-            <Pressable
-              style={[styles.modalButton, styles.cancelButton]}
-              onPress={() => {
-                setModalVisible(false);
-                resetFormAndEditingState();
-              }}
-            >
-              <Text style={[styles.modalButtonText, styles.cancelButtonText]}>
-                Cancel
-              </Text>
-            </Pressable>
-          </View>
-        </Pressable>
-      </Modal> */}
     </View>
   );
 };
@@ -561,7 +415,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EF4444",
   },
   deleteButton: {
-    backgroundColor: "#DC2626", // A darker red for delete
+    backgroundColor: "#DC2626",
   },
   modalButtonText: {
     color: "white",
