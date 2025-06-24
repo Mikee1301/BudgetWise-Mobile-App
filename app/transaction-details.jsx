@@ -46,21 +46,23 @@ const TransactionDetails = () => {
           <View style={styles.transactionDetailsItem}>
             <View style={styles.transactionDetailsIcon}>
               <Icon name="Calendar" size={20} color="#666" />
-              <Text>Date</Text>
+              <Text style={styles.transactionDetailsIconText}>Date</Text>
             </View>
             <Text>{transaction.date}</Text>
           </View>
           <View style={styles.transactionDetailsItem}>
             <View style={styles.transactionDetailsIcon}>
               <Icon name="Wallet" size={20} color="#666" />
-              <Text>Date</Text>
+              <Text style={styles.transactionDetailsIconText}>Account</Text>
             </View>
             <Text>{transaction.account}</Text>
           </View>
           <View style={styles.transactionDetailsItem}>
             <View style={styles.transactionDetailsIcon}>
               <Icon name="Rows3" size={20} color="#666" />
-              <Text>Date</Text>
+              <Text style={styles.transactionDetailsIconText}>
+                Transaction ID
+              </Text>
             </View>
             <Text>
               <Text>{transaction.id}</Text>
@@ -169,8 +171,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
-    width: 70,
-    justifyContent: "space-between",
+    width: 100,
+  },
+  transactionDetailsIconText: {
+    marginLeft: 8,
+    color: "#666",
+    fontSize: 14,
   },
   transactionActions: {
     height: "auto",
