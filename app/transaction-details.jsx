@@ -74,7 +74,9 @@ const TransactionDetails = () => {
             </View>
             <Spacer height={10} />
             <Text>
-              <Text>{transaction.notes}</Text>
+              <Text>
+                {transaction.notes || "No notes for this transaction."}
+              </Text>
             </Text>
           </View>
         </Card>
