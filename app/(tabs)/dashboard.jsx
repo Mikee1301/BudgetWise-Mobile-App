@@ -14,7 +14,7 @@ import {
 import Icon from "../../components/common/Icon";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
-import AppBar from "../../components/common/AppBar";
+import AppBar from "../../components/dashboard/AppBar";
 import BalanceCard from "../../components/dashboard/BalanceCard";
 import QuickActionButton from "../../components/dashboard/QuickActionsButtons";
 
@@ -140,7 +140,14 @@ const Dashboard = () => {
               <Card
                 style={[styles.transactionCard, { borderRadius: 0 }]}
                 onPress={() => {
-                  console.log(item);
+                  const { ...serializableTransactionData } = item;
+                  // Navigate to the create-account screen and pass account data
+                  router.push({
+                    pathname: "/transaction-details",
+                    params: {
+                      transaction: JSON.stringify(serializableTransactionData),
+                    }, // Pass account as a stringified JSON
+                  });
                 }}
               >
                 <View style={styles.transactionItem}>
