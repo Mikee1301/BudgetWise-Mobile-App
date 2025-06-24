@@ -79,7 +79,13 @@ const TransactionDetails = () => {
       </View>
       <Spacer height={20} />
       <View style={styles.transactionActions}>
-        <Pressable style={styles.editTransactionButton} onPress={() => {}}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.editTransactionButton,
+            pressed && { opacity: 0.7 },
+          ]}
+          onPress={() => {}}
+        >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Icon name="Pencil" size={20} color="#fff" />
             <Text style={[styles.editTransactionButtonText, { marginLeft: 8 }]}>
@@ -88,13 +94,14 @@ const TransactionDetails = () => {
           </View>
         </Pressable>
         <Pressable
-          style={[
+          style={({ pressed }) => [
             styles.editTransactionButton,
+            pressed && { opacity: 0.7 }, // Add visual feedback on press
             {
               backgroundColor: tinycolor("#EF4444").setAlpha(0.3).toRgbString(),
             },
           ]}
-          onPress={() => {}}
+          onPress={() => console.log("Delete Transaction")}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Icon name="Trash" size={20} color="#EF4444" />
