@@ -4,7 +4,7 @@ import tinycolor from "tinycolor2";
 import Icon from "../common/Icon";
 const IconInsideCicle = ({
   iconName,
-  circleColor = "#F3F4F6",
+  circleColor = "#7C7BF0",
   iconSize = 24,
   circleSize,
   iconColor = "black",

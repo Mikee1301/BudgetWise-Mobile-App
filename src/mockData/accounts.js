@@ -7,6 +7,8 @@ export const accounts = [
     iconColor: "#10B981",
     accountNo: 1234567,
     accountType: "Cards",
+    createdAt: "2025-06-25",
+    updatedAt: "2025-06-25",
   },
   {
     id: 2,
@@ -16,6 +18,8 @@ export const accounts = [
     iconColor: "#6366F1",
     accountNo: 1234567,
     accountType: "Banks",
+    createdAt: "2025-06-20",
+    updatedAt: "2025-06-24",
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ export const accounts = [
     iconColor: "#6366F1",
     accountNo: 1234567,
     accountType: "Cash",
+    createdAt: "2025-06-22",
+    updatedAt: "2025-06-23",
   },
   {
     id: 4,
@@ -34,5 +40,7 @@ export const accounts = [
     iconColor: "#6366F1",
     accountNo: 1234567,
     accountType: "Cash",
+    createdAt: "2025-06-19",
+    updatedAt: "2025-06-21",
   },
 ];

@@ -2,13 +2,26 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon from "../common/Icon";
 
-const CustomAppBar = ({ title = "AppBar", onBack, onDelete, ...props }) => {
+const CustomAppBar = ({
+  title = "AppBar",
+  onBack,
+  onDelete,
+  onEdit,
+  ...props
+}) => {
   return (
     <View style={styles.appbarContainer}>
       <TouchableOpacity onPress={onBack} style={styles.backButton}>
         <Icon name="ArrowLeft" size={24} color="#111827" />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
+      {onEdit ? (
+        <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+          <Icon name="Pencil" size={22} color="#6366F1" />
+        </TouchableOpacity>
+      ) : (
+        <View style={{ width: 32 }} />
+      )}
       {onDelete ? (
         <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
           <Icon name="Trash" size={22} color="#EF4444" />

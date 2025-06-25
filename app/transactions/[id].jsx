@@ -43,7 +43,7 @@ const TransactionDetails = () => {
         <Text style={styles.transactionCategory}>{transaction.category}</Text>
       </View>
       <View style={styles.transactionDetails}>
-        <Card>
+        <Card notTouchable={true}>
           <View style={styles.transactionDetailsItem}>
             <View style={styles.transactionDetailsIcon}>
               <Icon name="Calendar" size={20} color="#666" />

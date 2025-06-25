@@ -2,14 +2,21 @@ import React, { ReactNode } from "react";
 import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
 interface CardProps {
+  notTouchable: boolean;
   children: ReactNode;
   style?: ViewStyle | ViewStyle[];
   onPress?: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ children, style, onPress }) => {
+const Card: React.FC<CardProps> = ({
+  notTouchable = false,
+  children,
+  style,
+  onPress,
+}) => {
   return (
     <TouchableOpacity
+      disabled={notTouchable}
       style={[styles.card, style]}
       onPress={onPress}
       activeOpacity={0.7}
