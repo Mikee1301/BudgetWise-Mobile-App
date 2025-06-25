@@ -18,8 +18,8 @@ import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
 
 // Data
-import { categories } from "../../data/categories";
-import { accounts } from "../../data/accounts";
+import { categories } from "../../src/mockData/categories";
+import { accounts } from "../../src/mockData/accounts";
 
 // const accounts = [
 //   {

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Icon from "../../components/common/Icon";
+import Icon from "../common/Icon";
 const { width } = Dimensions.get("window");
 
 interface QuickActionButtonProps {

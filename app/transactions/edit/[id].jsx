@@ -1,7 +1,7 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomAppBar from "../components/common/CustomAppBar";
+import CustomAppBar from "../../../src/components/common/CustomAppBar";
 import tinycolor from "tinycolor2";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { use, useEffect, useState } from "react";
@@ -15,16 +15,18 @@ import {
   View,
 } from "react-native";
 import { Minus, Plus } from "lucide-react-native";
-import Card from "../components/common/Card";
-import Icon from "../components/common/Icon";
-import Spacer from "../components/common/Spacer";
+import Card from "../../../src/components/common/Card";
+import Icon from "../../../src/components/common/Icon";
+import Spacer from "../../../src/components/common/Spacer";
 // Data
-import { categories } from "../data/categories";
-import { accounts } from "../data/accounts";
+import { categories } from "../../../src/mockData/categories";
+import { accounts } from "../../../src/mockData/accounts";
 
 const EditTransaction = () => {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
+  const { id } = params;
+
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [isAccountModalVisible, setAccountModalVisible] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);

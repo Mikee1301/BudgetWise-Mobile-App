@@ -20,7 +20,7 @@ const TabLayout = () => {
       }}
     >
       <Tabs.Screen
-        name="dashboard"
+        name="index"
         options={{
           title: "Dashboard",
           tabBarIcon: ({ color, size }) => (
@@ -41,7 +41,7 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="create-transaction"
+        name="createTransaction"
         options={{
           headerShown: true,
           title: "",
