@@ -1,0 +1,38 @@
+export const accounts = [
+  {
+    id: 1,
+    name: "Savings",
+    balance: 1000000,
+    icon: "PiggyBank",
+    iconColor: "#10B981",
+    accountNo: 1234567,
+    accountType: "Cards",
+  },
+  {
+    id: 2,
+    name: "BPI",
+    balance: 12485,
+    icon: "CreditCard",
+    iconColor: "#6366F1",
+    accountNo: 1234567,
+    accountType: "Banks",
+  },
+  {
+    id: 3,
+    name: "Wallet",
+    balance: 12485,
+    icon: "CreditCard",
+    iconColor: "#6366F1",
+    accountNo: 1234567,
+    accountType: "Cash",
+  },
+  {
+    id: 4,
+    name: "Cash",
+    balance: 12485,
+    icon: "CreditCard",
+    iconColor: "#6366F1",
+    accountNo: 1234567,
+    accountType: "Cash",
+  },
+];
