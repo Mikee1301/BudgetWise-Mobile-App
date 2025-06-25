@@ -26,4 +26,13 @@ export const accounts = [
     accountNo: 1234567,
     accountType: "Cash",
   },
+  {
+    id: 4,
+    name: "Cash",
+    balance: 12485,
+    icon: "CreditCard",
+    iconColor: "#6366F1",
+    accountNo: 1234567,
+    accountType: "Cash",
+  },
 ];
