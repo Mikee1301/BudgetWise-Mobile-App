@@ -226,7 +226,7 @@ const CreateTransaction = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* Description */}
-        <Card style={{ padding: 15 }}>
+        <Card>
           <Text style={styles.transactionCategoryLabel}>Description</Text>
           <View style={styles.descriptionContainer}>
             <View
@@ -247,7 +247,7 @@ const CreateTransaction = () => {
         </Card>
         <Spacer />
         {/* Category */}
-        <Card style={{ padding: 10 }}>
+        <Card>
           <Text style={styles.transactionCategoryLabel}>Category</Text>
           <Pressable
             onPress={() => setCategoryModalVisible(true)}
@@ -278,7 +278,7 @@ const CreateTransaction = () => {
 
         <Spacer />
         {/* Account */}
-        <Card style={{ padding: 15 }}>
+        <Card>
           <Text style={styles.transactionCategoryLabel}>
             {transactionType === "Transfer" ? "From" : "Source"}
           </Text>
@@ -318,7 +318,7 @@ const CreateTransaction = () => {
         </Card>
 
         {transactionType === "Transfer" && (
-          <Card style={{ padding: 15, marginTop: 15 }}>
+          <Card style={{ marginTop: 15 }}>
             <Text style={styles.transactionCategoryLabel}>To</Text>
             <Pressable
               onPress={() => {
@@ -361,7 +361,7 @@ const CreateTransaction = () => {
         )}
         <Spacer />
         {/* Date */}
-        <Card style={{ padding: 15 }}>
+        <Card>
           <Text style={styles.transactionCategoryLabel}>Date</Text>
           <Pressable
             onPress={() => setShowDatePicker(true)}

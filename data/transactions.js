@@ -9,6 +9,7 @@ export const transactions = [
     amount: -1500.75,
     account: "Cash",
     notes: "Bought weekly groceries at the supermarket",
+    type: "expense",
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ export const transactions = [
     amount: 50000.0,
     account: "Cash",
     notes: "Monthly salary credited",
+    type: "income",
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ export const transactions = [
     amount: -3500.0,
     account: "Cash",
     notes: "Paid June electric bill",
+    type: "expense",
   },
   {
     id: 4,
@@ -42,6 +45,7 @@ export const transactions = [
     amount: -1200.0,
     account: "Cash",
     notes: "Dinner at a restaurant",
+    type: "expense",
   },
   {
     id: 5,
@@ -53,6 +57,7 @@ export const transactions = [
     amount: 15000.0,
     account: "Cash",
     notes: "Payment for freelance project",
+    type: "income",
   },
   {
     id: 6,
@@ -64,5 +69,6 @@ export const transactions = [
     amount: 15000.0,
     account: "Cash",
     notes: "Payment for another freelance project",
+    type: "income",
   },
 ];

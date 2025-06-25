@@ -1,7 +1,7 @@
 import { Pressable, StatusBar, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import tinycolor from "tinycolor2";
 
 // Components
@@ -11,6 +11,7 @@ import Card from "../components/common/Card";
 import Spacer from "../components/common/Spacer";
 
 const TransactionDetails = () => {
+  const router = useRouter();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
 
@@ -88,7 +89,14 @@ const TransactionDetails = () => {
             styles.editTransactionButton,
             pressed && { opacity: 0.7 },
           ]}
-          onPress={() => {}}
+          onPress={() => {
+            router.push({
+              pathname: "/edit-transaction",
+              params: {
+                transaction: JSON.stringify(transaction),
+              },
+            });
+          }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Icon name="Pencil" size={20} color="#fff" />
@@ -105,7 +113,6 @@ const TransactionDetails = () => {
               backgroundColor: tinycolor("#EF4444").setAlpha(0.3).toRgbString(),
             },
           ]}
-          onPress={() => console.log("Delete Transaction")}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Icon name="Trash" size={20} color="#EF4444" />
