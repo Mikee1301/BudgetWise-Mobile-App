@@ -5,10 +5,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import tinycolor from "tinycolor2";
 
 // Components
-import CustomAppBar from "../../components/common/CustomAppBar";
-import Icon from "../../components/common/Icon";
-import Card from "../../components/common/Card";
-import Spacer from "../../components/common/Spacer";
+import CustomAppBar from "../../src/components/common/CustomAppBar";
+import Icon from "../../src/components/common/Icon";
+import Card from "../../src/components/common/Card";
+import Spacer from "../../src/components/common/Spacer";
 
 const TransactionDetails = () => {
   const router = useRouter();

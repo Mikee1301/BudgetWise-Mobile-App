@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Spacer from "../../components/common/Spacer";
+import Spacer from "../../src/components/common/Spacer";
 
 const accountCategories = ["Banks", "Cards", "Cash"];
 const CreateAccountScreen = () => {
