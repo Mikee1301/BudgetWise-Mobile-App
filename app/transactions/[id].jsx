@@ -5,10 +5,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import tinycolor from "tinycolor2";
 
 // Components
-import CustomAppBar from "../components/common/CustomAppBar";
-import Icon from "../components/common/Icon";
-import Card from "../components/common/Card";
-import Spacer from "../components/common/Spacer";
+import CustomAppBar from "../../components/common/CustomAppBar";
+import Icon from "../../components/common/Icon";
+import Card from "../../components/common/Card";
+import Spacer from "../../components/common/Spacer";
 
 const TransactionDetails = () => {
   const router = useRouter();
@@ -91,7 +91,7 @@ const TransactionDetails = () => {
           ]}
           onPress={() => {
             router.push({
-              pathname: "/edit-transaction",
+              pathname: `/transactions/edit/${transaction.id}`,
               params: {
                 transaction: JSON.stringify(transaction),
               },

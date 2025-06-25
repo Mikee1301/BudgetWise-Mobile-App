@@ -14,13 +14,13 @@ import {
 import Icon from "../../components/common/Icon";
 import Card from "../../components/common/Card";
 import Spacer from "../../components/common/Spacer";
-import AppBar from "../../components/dashboard/AppBar";
-import BalanceCard from "../../components/dashboard/BalanceCard";
-import QuickActionButton from "../../components/dashboard/QuickActionsButtons";
+import AppBar from "../../src/components/dashboard/AppBar";
+import BalanceCard from "../../src/components/dashboard/BalanceCard";
+import QuickActionButton from "../../src/components/dashboard/QuickActionsButtons";
 
 // Data
-import { accounts } from "../../data/accounts";
-import { transactions } from "../../data/transactions";
+import { accounts } from "../../src/mockData/accounts";
+import { transactions } from "../../src/mockData/transactions";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -90,11 +90,10 @@ const Dashboard = () => {
               style={styles.accountCard}
               key={account.id}
               onPress={() => {
-                const { icon, ...serializableAccountData } = account;
                 // Navigate to the create-account screen and pass account data
                 router.push({
-                  pathname: "/create-account",
-                  params: { account: JSON.stringify(serializableAccountData) }, // Pass account as a stringified JSON
+                  pathname: `/accounts/${account.id}`,
+                  params: { account: JSON.stringify(account) }, // Pass account as a stringified JSON
                 });
               }}
             >
@@ -143,7 +142,7 @@ const Dashboard = () => {
                   const { ...serializableTransactionData } = item;
                   // Navigate to the create-account screen and pass account data
                   router.push({
-                    pathname: "/transaction-details",
+                    pathname: `/transactions/${item.id}`,
                     params: {
                       transaction: JSON.stringify(serializableTransactionData),
                     }, // Pass account as a stringified JSON
