@@ -8,11 +8,15 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../../src/components/common/Spacer";
+import CustomAppBar from "../../src/components/common/CustomAppBar";
 
 const accountCategories = ["Banks", "Cards", "Cash"];
+
 const CreateAccountScreen = () => {
   const router = useRouter();
   const navigation = useNavigation();
@@ -22,7 +26,7 @@ const CreateAccountScreen = () => {
   const [accountName, setAccountName] = useState("");
   const [balance, setBalance] = useState("");
   const [accountNo, setAccountNo] = useState("");
-  const [category, setCategory] = useState(accountCategories[0]); // Default to first category
+  const [category, setCategory] = useState(accountCategories[0]);
 
   useEffect(() => {
     if (params.account) {
@@ -34,9 +38,8 @@ const CreateAccountScreen = () => {
         setBalance(accountData.balance.toString());
         setAccountNo(accountData.accountNo.toString());
         setCategory(accountData.category);
-        navigation.setOptions({ title: "Edit Accounts" });
+        navigation.setOptions({ title: "Edit Account" });
       } catch (e) {
-        console.error("Failed to parse account data for editing:", e);
         Alert.alert("Error", "Could not load account data for editing.");
         router.back();
       }
@@ -59,15 +62,12 @@ const CreateAccountScreen = () => {
 
     if (isEditMode && editingAccount) {
       const updatedAccount = { ...editingAccount, ...currentAccountData };
-      console.log("Updating Account:", updatedAccount);
       // TODO: Implement actual state update or API call to update the account
     } else {
-      const newAccount = { id: Date.now(), ...currentAccountData }; // Example ID
-      console.log("Adding New Account:", newAccount);
+      const newAccount = { id: Date.now(), ...currentAccountData };
       // TODO: Implement actual state update or API call to save the new account
     }
-
-    router.back(); // Go back to the previous screen
+    router.back();
   };
 
   const handleDeleteAccount = () => {
@@ -81,7 +81,6 @@ const CreateAccountScreen = () => {
             text: "Delete",
             style: "destructive",
             onPress: () => {
-              console.log("Deleting Account:", editingAccount);
               // TODO: Implement actual state update or API call to delete the account
               router.back();
             },
@@ -92,77 +91,111 @@ const CreateAccountScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>
-          {isEditMode ? "Edit Account" : "Create New Account"}
-        </Text>
-        <Text style={styles.label}>Account Name:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Account Name (e.g., Savings, BPI Credit)"
-          value={accountName}
-          onChangeText={setAccountName}
-        />
-        <Text style={styles.label}>Account Number:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Account Number (last 4 digits if preferred)"
-          keyboardType="numeric"
-          value={accountNo}
-          onChangeText={setAccountNo}
-        />
-
-        <Text style={styles.label}>Account Type:</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={category}
-            style={styles.picker}
-            onValueChange={(itemValue) => setCategory(itemValue)}
+    <SafeAreaView style={styles.safeArea}>
+      <CustomAppBar
+        title={isEditMode ? "Edit Account" : "Add Account"}
+        onBack={() => navigation.goBack()}
+      />
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoiding}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <View style={styles.formCard}>
+          {/* <Text style={styles.title}>
+            {isEditMode ? "Edit Account" : "Create New Account"}
+          </Text> */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Account Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="e.g., Savings, BPI Credit"
+              value={accountName}
+              onChangeText={setAccountName}
+              placeholderTextColor="#9CA3AF"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Account Number</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Last 4 digits or full"
+              keyboardType="numeric"
+              value={accountNo}
+              onChangeText={setAccountNo}
+              placeholderTextColor="#9CA3AF"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Account Type</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={category}
+                style={styles.picker}
+                onValueChange={setCategory}
+                dropdownIconColor="#6366F1"
+              >
+                {accountCategories.map((cat) => (
+                  <Picker.Item key={cat} label={cat} value={cat} />
+                ))}
+              </Picker>
+            </View>
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Initial Balance</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="e.g., 10000"
+              keyboardType="numeric"
+              value={balance}
+              onChangeText={setBalance}
+              placeholderTextColor="#9CA3AF"
+            />
+          </View>
+          <Spacer height={20} />
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              styles.saveButton,
+              pressed && { opacity: 0.8 },
+            ]}
+            onPress={handleSaveAccount}
           >
-            {accountCategories.map((cat) => (
-              <Picker.Item key={cat} label={cat} value={cat} />
-            ))}
-          </Picker>
+            <Text style={styles.buttonText}>
+              {isEditMode ? "Update Account" : "Add Account"}
+            </Text>
+          </Pressable>
+          {isEditMode && (
+            <>
+              <Spacer height={10} />
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.deleteButton,
+                  pressed && { opacity: 0.8 },
+                ]}
+                onPress={handleDeleteAccount}
+              >
+                <Text style={styles.buttonText}>Delete Account</Text>
+              </Pressable>
+            </>
+          )}
+          <Spacer height={10} />
+          <View style={styles.divider} />
+          <Spacer height={10} />
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              styles.cancelButton,
+              pressed && { opacity: 0.8 },
+            ]}
+            onPress={() => router.back()}
+          >
+            <Text style={[styles.buttonText, styles.cancelButtonText]}>
+              Cancel
+            </Text>
+          </Pressable>
         </View>
-        <Text style={styles.label}>Balance:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Balance (e.g., 10000)"
-          keyboardType="numeric"
-          value={balance}
-          onChangeText={setBalance}
-        />
-        <Spacer height={10} />
-        <Pressable
-          style={[styles.button, styles.saveButton]}
-          onPress={handleSaveAccount}
-        >
-          <Text style={styles.buttonText}>
-            {isEditMode ? "Update Account" : "Add Account"}
-          </Text>
-        </Pressable>
-        <Spacer height={10} />
-        {isEditMode && (
-          <>
-            <Pressable
-              style={[styles.button, styles.deleteButton]}
-              onPress={handleDeleteAccount}
-            >
-              <Text style={styles.buttonText}>Delete Account</Text>
-            </Pressable>
-            <Spacer height={10} />
-          </>
-        )}
-        <Pressable
-          style={[styles.button, styles.cancelButton]}
-          onPress={() => router.back()}
-        >
-          <Text style={[styles.buttonText, styles.cancelButtonText]}>
-            Cancel
-          </Text>
-        </Pressable>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -170,56 +203,96 @@ const CreateAccountScreen = () => {
 export default CreateAccountScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#F3F4F6",
   },
-  formContainer: {
+  keyboardAvoiding: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
+    // justifyContent: "center",
+    alignItems: "center",
+  },
+  formCard: {
+    width: "95%",
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    padding: 24,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 4,
+    marginTop: 24,
+    marginBottom: 24,
   },
   title: {
     fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 24,
     textAlign: "center",
+    color: "#111827",
+  },
+  inputGroup: {
+    marginBottom: 18,
+  },
+  label: {
+    fontSize: 15,
+    fontWeight: "600",
+    marginBottom: 6,
+    color: "#374151",
   },
   input: {
-    height: 45,
-    borderColor: "gray",
+    height: 48,
+    borderColor: "#E5E7EB",
     borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: "#fff",
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    backgroundColor: "#F9FAFB",
+    fontSize: 16,
+    color: "#111827",
   },
-  label: { fontSize: 16, marginBottom: 5, marginTop: 5 },
   pickerContainer: {
-    height: 50,
-    borderColor: "gray",
+    borderColor: "#E5E7EB",
     borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#F9FAFB",
+    overflow: "hidden",
   },
-  picker: { height: 50, width: "100%" },
+  picker: {
+    height: 48,
+    width: "100%",
+    color: "#111827",
+  },
   button: {
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    borderRadius: 10,
+    paddingVertical: 14,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 2,
+    elevation: 0,
   },
-  saveButton: { backgroundColor: "#6366f1" },
-  cancelButton: { backgroundColor: "#EF4444" },
-  deleteButton: { backgroundColor: "#DC2626" },
-  buttonText: { color: "white", fontWeight: "bold", fontSize: 16 },
-  cancelButtonText: { color: "white" },
+  saveButton: {
+    backgroundColor: "#6366F1",
+  },
+  deleteButton: {
+    backgroundColor: "#F87171",
+  },
+  cancelButton: {
+    backgroundColor: "#F3F4F6",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#fff",
+  },
+  cancelButtonText: {
+    color: "#6366F1",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#E5E7EB",
+    width: "100%",
+    marginVertical: 4,
+  },
 });

@@ -13,6 +13,7 @@ import Icon from "../../src/components/common/Icon";
 import tinycolor from "tinycolor2";
 
 const AccountInfo = () => {
+  const router = useRouter();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
   const account = params.account ? JSON.parse(params.account) : {};
@@ -85,9 +86,9 @@ const AccountInfo = () => {
           ]}
           onPress={() => {
             router.push({
-              pathname: `/transactions/edit/${transaction.id}`,
+              pathname: `/accounts/create`,
               params: {
-                transaction: JSON.stringify(transaction),
+                account: JSON.stringify(account),
               },
             });
           }}

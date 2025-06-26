@@ -221,7 +221,7 @@ const Accounts = () => {
       {/* Create Account Button */}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => router.push("/create-account")}
+        onPress={() => router.push("/accounts/create")}
       >
         <Plus size={28} color="#fff" />
       </TouchableOpacity>
