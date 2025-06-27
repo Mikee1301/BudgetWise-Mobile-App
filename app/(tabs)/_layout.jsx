@@ -40,7 +40,7 @@ const TabLayout = () => {
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="createTransaction"
         options={{
           headerShown: true,
@@ -51,7 +51,7 @@ const TabLayout = () => {
             <MaterialIcons name="add-circle-outline" size={30} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="accounts"
         options={{

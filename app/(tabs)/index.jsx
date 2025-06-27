@@ -182,6 +182,12 @@ const Dashboard = () => {
           />
         </View>
       </ScrollView>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push("/transactions/create")}
+      >
+        <Icon name="Plus" size={24} color="#fff" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -329,5 +335,21 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#9CA3AF",
     marginTop: 2,
+  },
+  fab: {
+    position: "absolute",
+    width: 56,
+    height: 56,
+    alignItems: "center",
+    justifyContent: "center",
+    right: 20,
+    bottom: 20,
+    backgroundColor: "#6366F1",
+    borderRadius: 28,
+    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    zIndex: 10,
   },
 });

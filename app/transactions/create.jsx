@@ -13,9 +13,14 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+// Components
 import Icon from "../../src/components/common/Icon";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
+import CustomAppBar from "../../src/components/common/CustomAppBar";
 
 // Data
 import { categories } from "../../src/mockData/categories";
@@ -52,6 +57,7 @@ import { accounts } from "../../src/mockData/accounts";
 // ];
 
 const CreateTransaction = () => {
+  const navigation = useNavigation();
   const [transactionType, setTransactionType] = useState("Expenses");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(new Date());
@@ -110,7 +116,11 @@ const CreateTransaction = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <CustomAppBar
+        title="Transaction Details"
+        onBack={() => navigation.goBack()}
+      />
       {/* Transaction Type */}
       <View style={styles.transationType}>
         <View style={styles.transationTypeBox}>
@@ -489,7 +499,7 @@ const CreateTransaction = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

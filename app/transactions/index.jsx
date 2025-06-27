@@ -1,4 +1,6 @@
-import { useState } from "react";
+import dayjs from "dayjs";
+import { useMemo, useState } from "react";
+import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 // Components
@@ -9,8 +11,10 @@ import Spacer from "../../src/components/common/Spacer";
 
 // Data
 import { transactions } from "../../src/mockData/transactions";
+import { categories } from "../../src/mockData/categories";
 
 const Transactions = () => {
+  const router = useRouter();
   const [dateFilter, setDateFilter] = useState("Today");
   const [activeGroupBy, setActiveGroupBy] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("All Categories");
@@ -24,17 +28,6 @@ const Transactions = () => {
     "This Year",
     "Last Year",
   ];
-  const categoryFilterItems = [
-    "All Categories",
-    "Food & Drink",
-    "Groceries",
-    "Transportation",
-    "Income",
-    "Shopping",
-    "Bills",
-    "Entertainment",
-  ];
-
   const groupByItems = [
     { label: "All", value: "All" },
     { label: "Income", value: "Income" },
@@ -42,9 +35,70 @@ const Transactions = () => {
     { label: "Transfer", value: "Transfer" },
   ];
 
-  const totalIncome = 80000;
-  const totalExpenses = 20000;
   const currenySymbol = "₱";
+
+  const { filteredTransactions, totalIncome, totalExpenses } = useMemo(() => {
+    let filtered = transactions;
+
+    // Category filter
+    if (categoryFilter !== "All Categories") {
+      filtered = filtered.filter(
+        (transaction) => transaction.category === categoryFilter
+      );
+    }
+    // Transaction Type filter
+    if (activeGroupBy !== "All") {
+      filtered = filtered.filter(
+        (transaction) => transaction.type === activeGroupBy
+      );
+    }
+    // Date filter
+    if (dateFilter !== "Today") {
+      const today = dayjs();
+      filtered = filtered.filter((transaction) => {
+        const txDate = dayjs(transaction.date);
+        switch (dateFilter) {
+          case "Yesterday":
+            return txDate.isSame(today.subtract(1, "day"), "day");
+          case "This Week":
+            return txDate.isSame(today, "week");
+          case "Last Week":
+            return txDate.isSame(today.subtract(1, "week"), "week");
+          case "This Month":
+            return txDate.isSame(today, "month");
+          case "Last Month":
+            return txDate.isSame(today.subtract(1, "month"), "month");
+          case "This Year":
+            return txDate.isSame(today, "year");
+          case "Last Year":
+            return txDate.isSame(today.subtract(1, "year"), "year");
+          default:
+            return true;
+        }
+      });
+    } else {
+      // "Today"
+      const today = dayjs();
+      filtered = filtered.filter((transaction) =>
+        dayjs(transaction.date).isSame(today, "day")
+      );
+    }
+
+    // Calculate totals
+    const totalIncome = filtered
+      .filter((transaction) => transaction.type === "Income")
+      .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+    const totalExpenses = filtered
+      .filter((transaction) => transaction.type === "Expenses")
+      .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+    return {
+      filteredTransactions: filtered,
+      totalIncome,
+      totalExpenses,
+    };
+  }, [categoryFilter, activeGroupBy, dateFilter, transactions]);
 
   return (
     <View style={styles.mainContainer}>
@@ -62,7 +116,10 @@ const Transactions = () => {
           <Dropdown
             selectedValue={categoryFilter}
             onValueChange={(itemValue) => setCategoryFilter(itemValue)}
-            items={categoryFilterItems}
+            items={[
+              "All Categories",
+              ...categories.map((category) => category.name),
+            ]}
             containerStyle={styles.pickerContainer}
           />
         </View>
@@ -129,13 +186,18 @@ const Transactions = () => {
             <Text style={styles.transactionListHeaderText}>{dateFilter}</Text>
           </View>
           <FlatList
-            data={transactions}
+            data={filteredTransactions}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <Card
                 style={[styles.transactionCard, { borderRadius: 0 }]}
                 onPress={() => {
-                  console.log(item);
+                  router.push({
+                    pathname: `/transactions/${item.id}`,
+                    params: {
+                      transaction: JSON.stringify(item),
+                    }, // Pass account as a stringified JSON
+                  });
                 }}
               >
                 <View style={styles.transactionItem}>
