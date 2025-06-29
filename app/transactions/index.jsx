@@ -84,12 +84,17 @@ const Transactions = () => {
       );
     }
 
-    // Calculate totals
-    const totalIncome = filtered
+    // --- Calculate totals for the present month only ---
+    const thisMonth = dayjs();
+    const thisMonthTransactions = transactions.filter((transaction) =>
+      dayjs(transaction.date).isSame(thisMonth, "month")
+    );
+
+    const totalIncome = thisMonthTransactions
       .filter((transaction) => transaction.type === "Income")
       .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-    const totalExpenses = filtered
+    const totalExpenses = thisMonthTransactions
       .filter((transaction) => transaction.type === "Expenses")
       .reduce((acc, transaction) => acc + transaction.amount, 0);
 
@@ -148,7 +153,11 @@ const Transactions = () => {
           ))}
         </View>
       </View>
+
       <View style={styles.transactionSection}>
+        <Text style={[styles.transactionListHeaderText]}>
+          This Month Summary
+        </Text>
         {/* Card Summary Section */}
         <View style={styles.cardSummaryContainer}>
           <Card style={{ width: "45%" }}>
@@ -287,6 +296,8 @@ const styles = StyleSheet.create({
   transactionSection: {
     backgroundColor: "#F9FAFB",
     flex: 1,
+    paddingHorizontal: 15,
+    paddingTop: 10,
   },
   cardSummaryContainer: {
     flexDirection: "row",
@@ -319,7 +330,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   transactionListContainer: {
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
     marginBottom: 20,
     paddingVertical: 10,
   },
