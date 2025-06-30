@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon from "../common/Icon";
+import { COLORS } from "../../constants/colors";
 
 const CustomAppBar = ({
   title = "AppBar",
@@ -12,7 +13,7 @@ const CustomAppBar = ({
   return (
     <View style={styles.appbarContainer}>
       <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Icon name="ArrowLeft" size={24} color="#111827" />
+        <Icon name="ArrowLeft" size={24} color={COLORS.text} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
       {onEdit ? (
@@ -24,7 +25,7 @@ const CustomAppBar = ({
       )}
       {onDelete ? (
         <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
-          <Icon name="Trash" size={22} color="#EF4444" />
+          <Icon name="Trash" size={22} color={COLORS.danger} />
         </TouchableOpacity>
       ) : (
         <View style={{ width: 32 }} />
@@ -35,7 +36,7 @@ const CustomAppBar = ({
 
 const styles = StyleSheet.create({
   appbarContainer: {
-    height: 48,
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,

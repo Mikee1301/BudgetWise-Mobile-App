@@ -18,6 +18,7 @@ import { Minus, Plus } from "lucide-react-native";
 import Card from "../../../src/components/common/Card";
 import Icon from "../../../src/components/common/Icon";
 import Spacer from "../../../src/components/common/Spacer";
+import { COLORS } from "../../../src/constants/colors";
 // Data
 import { categories } from "../../../src/mockData/categories";
 import { accounts } from "../../../src/mockData/accounts";
@@ -209,7 +210,11 @@ const EditTransaction = () => {
                 <View
                   style={[
                     styles.selectedDateIcon,
-                    { backgroundColor: "#E0E7FF" },
+                    {
+                      backgroundColor: tinycolor("#4F46E5")
+                        .setAlpha(0.3)
+                        .toRgbString(),
+                    },
                   ]}
                 >
                   <Icon name="Calendar" size={16} color="#4F46E5" />
@@ -391,7 +396,7 @@ export default EditTransaction;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
     // alignItems: "center",
   },
   transactionBody: {
@@ -409,13 +414,13 @@ const styles = StyleSheet.create({
     height: "90%",
     width: "90%",
     borderRadius: 10,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: COLORS.gray100,
     flexDirection: "row",
     alignItems: "center",
   },
   transationTypeItemIcon: {
     marginRight: 10,
-    color: "#121212",
+    color: COLORS.text,
   },
   transationTypeItem: {
     justifyContent: "center",
@@ -428,13 +433,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   transationTypeItemText: {
-    color: "#121212",
+    color: COLORS.text,
   },
   selectedTransationTypeItem: {
-    backgroundColor: "#6366f1",
+    backgroundColor: COLORS.primary,
   },
   selectedTransationTypeItemText: {
-    color: "#FFFFFF",
+    color: COLORS.textInverse,
   },
   transactionAmount: {
     width: "90%",
@@ -443,7 +448,7 @@ const styles = StyleSheet.create({
   transactionsAmountInput: {
     height: 50,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: COLORS.gray200,
     borderRadius: 8,
     paddingHorizontal: 10,
     marginVertical: 10,
@@ -473,10 +478,10 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: COLORS.alpha.dark,
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -493,21 +498,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: COLORS.gray100,
   },
   categoryItemText: {
     fontSize: 16,
     marginLeft: 10,
   },
   closeButton: {
-    backgroundColor: "#E5E7EB",
+    backgroundColor: COLORS.gray200,
     padding: 15,
     borderRadius: 15,
     alignItems: "center",
     marginTop: 20,
   },
   closeButtonText: {
-    color: "#1F2937",
+    color: COLORS.text,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -517,15 +522,15 @@ const styles = StyleSheet.create({
   },
   descriptionInput: {
     fontSize: 16,
-    color: "#121212",
+    color: COLORS.text,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: COLORS.gray200,
     borderRadius: 8,
     paddingHorizontal: 10,
     height: 100,
     paddingTop: 10,
     textAlignVertical: "top",
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.gray100,
   },
   transactionSection: {
     width: "90%",
@@ -543,18 +548,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
     width: 30,
     height: 30,
-    borderRadius: 30,
-    backgroundColor: "#FEE2E2",
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
   },
   accountModalOverlay: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: COLORS.alpha.dark,
   },
   accountModalContent: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -571,7 +575,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: COLORS.gray100,
   },
   accountListIconContainer: {
     marginRight: 10,
@@ -587,21 +591,21 @@ const styles = StyleSheet.create({
   accountListName: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#111827",
+    color: COLORS.text,
   },
   accountListBalance: {
     fontSize: 14,
-    color: "#6B7280",
+    color: COLORS.textLight,
   },
   accountModalCloseButton: {
-    backgroundColor: "#E5E7EB",
+    backgroundColor: COLORS.gray200,
     padding: 15,
     borderRadius: 15,
     alignItems: "center",
     marginTop: 20,
   },
   accountModalCloseButtonText: {
-    color: "#1F2937",
+    color: COLORS.text,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -609,12 +613,7 @@ const styles = StyleSheet.create({
     width: "90%",
     marginBottom: 16,
   },
-  accountSectionLabel: {
-    marginBottom: 10,
-    fontWeight: "500",
-    fontSize: 16,
-    color: "#111827",
-  },
+
   accountSelectButton: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -635,14 +634,14 @@ const styles = StyleSheet.create({
   accountSelectedName: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#111827",
+    color: COLORS.text,
   },
   accountSelectedBalance: {
     fontSize: 14,
-    color: "#6B7280",
+    color: COLORS.textLight,
   },
   accountPlaceholderText: {
-    color: "#9CA3AF",
+    color: COLORS.textLight,
     fontSize: 16,
   },
   saveButtonContainer: {
@@ -650,33 +649,22 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: "#F3F4F6",
+    borderTopColor: COLORS.gray100,
     flexDirection: "column",
     // gap: 10,
   },
   saveButtonPrimary: {
-    backgroundColor: "#6366F1",
+    backgroundColor: COLORS.primary,
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
     marginBottom: 8,
   },
   saveButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  saveButtonSecondary: {
-    backgroundColor: "#F3F4F6",
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  saveButtonSecondaryText: {
-    color: "#6366F1",
+    color: COLORS.textInverse,
     fontWeight: "bold",
     fontSize: 16,
   },

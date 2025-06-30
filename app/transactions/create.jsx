@@ -12,49 +12,24 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import tinycolor from "tinycolor2";
 
 // Components
 import Icon from "../../src/components/common/Icon";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
 import CustomAppBar from "../../src/components/common/CustomAppBar";
+import IconInsideCircle from "../../src/components/common/IconInsideCicle";
+
+import { COLORS } from "../../src/constants/colors";
 
 // Data
 import { categories } from "../../src/mockData/categories";
 import { accounts } from "../../src/mockData/accounts";
-
-// const accounts = [
-//   {
-//     id: "1",
-//     name: "Cash",
-//     balance: "9,000.00",
-//     currency: "Php",
-//     icon: "cash",
-//     color: "#16A34A",
-//     backgroundColor: "#D1FAE5",
-//   },
-//   {
-//     id: "2",
-//     name: "Bank Account",
-//     balance: "50,000.00",
-//     currency: "Php",
-//     icon: "bank",
-//     color: "#4F46E5",
-//     backgroundColor: "#E0E7FF",
-//   },
-//   {
-//     id: "3",
-//     name: "Credit Card",
-//     balance: "15,000.00",
-//     currency: "Php",
-//     icon: "credit-card",
-//     color: "#3B82F6",
-//     backgroundColor: "#DBEAFE",
-//   },
-// ];
 
 const CreateTransaction = () => {
   const navigation = useNavigation();
@@ -121,295 +96,257 @@ const CreateTransaction = () => {
         title="Transaction Details"
         onBack={() => navigation.goBack()}
       />
-      {/* Transaction Type */}
-      <View style={styles.transationType}>
-        <View style={styles.transationTypeBox}>
-          <Pressable
-            onPress={() => setTransactionType("Expenses")}
-            style={[
-              styles.transationTypeItem,
-              transactionType === "Expenses" &&
-                styles.selectedTransationTypeItem,
-            ]}
-          >
-            <Minus
-              style={[
-                styles.transationTypeItemIcon,
-                transactionType === "Expenses" &&
-                  styles.selectedTransationTypeItemText,
-              ]}
-              size={16}
-              strokeWidth={2}
-            />
-            <Text
-              style={[
-                styles.transationTypeItemText,
-                transactionType === "Expenses" &&
-                  styles.selectedTransationTypeItemText,
-              ]}
-            >
-              Expenses
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setTransactionType("Income")}
-            style={[
-              styles.transationTypeItem,
-              transactionType === "Income" && styles.selectedTransationTypeItem,
-            ]}
-          >
-            <Plus
-              style={[
-                styles.transationTypeItemIcon,
-                transactionType === "Income" &&
-                  styles.selectedTransationTypeItemText,
-              ]}
-              size={16}
-              strokeWidth={2}
-            />
-            <Text
-              style={[
-                styles.transationTypeItemText,
-                transactionType === "Income" &&
-                  styles.selectedTransationTypeItemText,
-              ]}
-            >
-              Income
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setTransactionType("Transfer")}
-            style={[
-              styles.transationTypeItem,
-              transactionType === "Transfer" &&
-                styles.selectedTransationTypeItem,
-            ]}
-          >
-            <ArrowLeftRight
-              style={[
-                styles.transationTypeItemIcon,
-                transactionType === "Transfer" &&
-                  styles.selectedTransationTypeItemText,
-              ]}
-              size={16}
-              strokeWidth={2}
-            />
-            <Text
-              style={[
-                styles.transationTypeItemText,
-                transactionType === "Transfer" &&
-                  styles.selectedTransationTypeItemText,
-              ]}
-            >
-              Transfer
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-
-      {/* Amount Input */}
-      <View style={styles.transactionAmount}>
-        <Text style={styles.transactionCurrency}>PHP</Text>
-        <View>
-          <Text style={styles.amountTextInputLabel}>Amount</Text>
-          <TextInput
-            value={amount}
-            onChangeText={(text) => {
-              // Allow only numbers and a single decimal point
-              const numericValue = text.replace(/[^0-9.]/g, "");
-              // Prevent multiple decimal points
-              if (numericValue.split(".").length > 2) {
-                return;
-              }
-              setAmount(numericValue);
-            }}
-            style={styles.amountTextInput}
-            keyboardType="numeric"
-            placeholder="0.00"
-          ></TextInput>
-        </View>
-      </View>
-
-      {/* Transaction Details */}
-      <ScrollView
-        contentContainerStyle={styles.scrollContentContainer}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       >
-        {/* Description */}
-        <Card>
-          <Text style={styles.transactionCategoryLabel}>Description</Text>
-          <View style={styles.descriptionContainer}>
-            <View
+        {/* Transaction Type */}
+        <View style={styles.typeSection}>
+          <View style={styles.typeButtonGroup}>
+            <Pressable
+              onPress={() => setTransactionType("Expenses")}
               style={[
-                styles.selectedCategoryIconContainer,
-                { backgroundColor: "#E5E7EB" },
+                styles.typeButton,
+                transactionType === "Expenses" && styles.typeButtonSelected,
               ]}
             >
-              <Icon name="Pencil" size={16} color="#4B5563" />
-            </View>
+              <Minus
+                style={[
+                  styles.typeButtonIcon,
+                  transactionType === "Expenses" &&
+                    styles.typeButtonSelectedText,
+                ]}
+                size={16}
+                strokeWidth={2}
+              />
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  transactionType === "Expenses" &&
+                    styles.typeButtonSelectedText,
+                ]}
+              >
+                Expenses
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setTransactionType("Income")}
+              style={[
+                styles.typeButton,
+                transactionType === "Income" && styles.typeButtonSelected,
+              ]}
+            >
+              <Plus
+                style={[
+                  styles.typeButtonIcon,
+                  transactionType === "Income" && styles.typeButtonSelectedText,
+                ]}
+                size={16}
+                strokeWidth={2}
+              />
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  transactionType === "Income" && styles.typeButtonSelectedText,
+                ]}
+              >
+                Income
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setTransactionType("Transfer")}
+              style={[
+                styles.typeButton,
+                transactionType === "Transfer" && styles.typeButtonSelected,
+              ]}
+            >
+              <ArrowLeftRight
+                style={[
+                  styles.typeButtonIcon,
+                  transactionType === "Transfer" &&
+                    styles.typeButtonSelectedText,
+                ]}
+                size={16}
+                strokeWidth={2}
+              />
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  transactionType === "Transfer" &&
+                    styles.typeButtonSelectedText,
+                ]}
+              >
+                Transfer
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* Amount Input */}
+        <View style={styles.amountSection}>
+          <Text style={styles.amountCurrency}>PHP</Text>
+          <View>
+            <Text style={styles.amountLabel}>Amount</Text>
             <TextInput
-              style={styles.descriptionInput}
-              placeholder="Add a description"
-              value={description}
-              onChangeText={setDescription}
+              value={amount}
+              onChangeText={(text) => {
+                const numericValue = text.replace(/[^0-9.]/g, "");
+                if (numericValue.split(".").length > 2) return;
+                setAmount(numericValue);
+              }}
+              style={styles.amountInput}
+              keyboardType="numeric"
+              placeholder="0.00"
             />
           </View>
-        </Card>
-        <Spacer />
-        {/* Category */}
-        <Card>
-          <Text style={styles.transactionCategoryLabel}>Category</Text>
-          <Pressable
-            onPress={() => setCategoryModalVisible(true)}
-            style={styles.selectCategory}
-          >
-            {selectedCategory ? (
-              <View style={styles.selectedCategory}>
-                <View
-                  style={[
-                    styles.selectedCategoryIconContainer,
-                    { backgroundColor: selectedCategory.backgroundColor },
-                  ]}
-                >
-                  <Icon
-                    name={selectedCategory.icon}
-                    size={16}
-                    color={selectedCategory.color}
-                  />
-                </View>
-                <Text>{selectedCategory.name}</Text>
-              </View>
-            ) : (
-              <Text style={styles.placeholderText}>Select a category</Text>
-            )}
-            <Icon name="chevron-right" size={24} />
-          </Pressable>
-        </Card>
+        </View>
 
-        <Spacer />
-        {/* Account */}
-        <Card>
-          <Text style={styles.transactionCategoryLabel}>
+        {/* Transaction Details */}
+        <ScrollView
+          contentContainerStyle={styles.detailsScrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Category */}
+          <Text style={styles.label}>Category</Text>
+          <Card>
+            <Pressable
+              onPress={() => setCategoryModalVisible(true)}
+              style={styles.selectRow}
+            >
+              {selectedCategory ? (
+                <View style={styles.selectedRow}>
+                  <IconInsideCircle
+                    iconName={selectedCategory.icon}
+                    iconColor={selectedCategory.iconColor}
+                    iconSize={15}
+                  />
+                  <Text>{selectedCategory.name}</Text>
+                </View>
+              ) : (
+                <Text style={styles.placeholderText}>Select a category</Text>
+              )}
+              <Icon name="ChevronRight" size={24} />
+            </Pressable>
+          </Card>
+
+          <Spacer height={10} />
+          {/* Account */}
+          <Text style={styles.label}>
             {transactionType === "Transfer" ? "From" : "Source"}
           </Text>
-          <Pressable
-            onPress={() => {
-              setAccountModalTarget("from");
-              setAccountModalVisible(true);
-            }}
-            style={styles.selectCategory}
-          >
-            {selectedAccount ? (
-              <View style={styles.selectedCategory}>
-                <View
-                  style={[
-                    styles.selectedCategoryIconContainer,
-                    { backgroundColor: selectedAccount.backgroundColor },
-                  ]}
-                >
-                  <Icon
-                    name={selectedAccount.icon}
-                    size={16}
-                    color={selectedAccount.color}
-                  />
-                </View>
-                <View>
-                  <Text>{selectedAccount.name}</Text>
-                  <Text style={styles.accountBalanceText}>
-                    {selectedAccount.currency} {selectedAccount.balance}
-                  </Text>
-                </View>
-              </View>
-            ) : (
-              <Text style={styles.placeholderText}>Select an account</Text>
-            )}
-            <Icon name="chevron-right" size={24} />
-          </Pressable>
-        </Card>
-
-        {transactionType === "Transfer" && (
-          <Card style={{ marginTop: 15 }}>
-            <Text style={styles.transactionCategoryLabel}>To</Text>
+          <Card>
             <Pressable
               onPress={() => {
-                setAccountModalTarget("to");
+                setAccountModalTarget("from");
                 setAccountModalVisible(true);
               }}
-              style={styles.selectCategory}
+              style={styles.selectRow}
             >
-              {selectedAccountToTransfer ? (
-                <View style={styles.selectedCategory}>
-                  <View
-                    style={[
-                      styles.selectedCategoryIconContainer,
-                      {
-                        backgroundColor:
-                          selectedAccountToTransfer.backgroundColor,
-                      },
-                    ]}
-                  >
-                    <Icon
-                      name={selectedAccountToTransfer.icon}
-                      size={16}
-                      color={selectedAccountToTransfer.color}
-                    />
-                  </View>
+              {selectedAccount ? (
+                <View style={styles.selectedRow}>
+                  <IconInsideCircle
+                    iconName={selectedAccount.icon}
+                    iconColor={selectedAccount.iconColor}
+                    iconSize={15}
+                  />
                   <View>
-                    <Text>{selectedAccountToTransfer.name}</Text>
+                    <Text>{selectedAccount.name}</Text>
                     <Text style={styles.accountBalanceText}>
-                      {selectedAccountToTransfer.currency}{" "}
-                      {selectedAccountToTransfer.balance}
+                      {selectedAccount.currency} {selectedAccount.balance}
                     </Text>
                   </View>
                 </View>
               ) : (
                 <Text style={styles.placeholderText}>Select an account</Text>
               )}
-              <Icon name="chevron-right" size={24} />
+              <Icon name="ChevronRight" size={24} />
             </Pressable>
           </Card>
-        )}
-        <Spacer />
-        {/* Date */}
-        <Card>
-          <Text style={styles.transactionCategoryLabel}>Date</Text>
-          <Pressable
-            onPress={() => setShowDatePicker(true)}
-            style={styles.selectCategory}
-          >
-            <View style={styles.selectedCategory}>
-              <View
-                style={[
-                  styles.selectedCategoryIconContainer,
-                  { backgroundColor: "#E0E7FF" },
-                ]}
-              >
-                <Icon name="Calendar" size={16} color="#4F46E5" />
-              </View>
-              <Text>{date.toLocaleDateString()}</Text>
-            </View>
-            <Icon name="chevron-right" size={24} />
-          </Pressable>
-          {showDatePicker && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={(event, selectedDate) => {
-                const currentDate = selectedDate || date;
-                setShowDatePicker(Platform.OS === "ios");
-                setDate(currentDate);
-              }}
-            />
+
+          {transactionType === "Transfer" && (
+            <Text style={[styles.label, { marginTop: 10 }]}>To</Text>
           )}
-        </Card>
-        <Spacer />
-      </ScrollView>
+          {transactionType === "Transfer" && (
+            <Card style={{ marginTop: 5 }}>
+              <Pressable
+                onPress={() => {
+                  setAccountModalTarget("to");
+                  setAccountModalVisible(true);
+                }}
+                style={styles.selectRow}
+              >
+                {selectedAccountToTransfer ? (
+                  <View style={styles.selectedRow}>
+                    <IconInsideCircle
+                      iconName={selectedAccountToTransfer.icon}
+                      iconColor={selectedAccountToTransfer.iconColor}
+                      iconSize={15}
+                    />
+                    <View>
+                      <Text>{selectedAccountToTransfer.name}</Text>
+                      <Text style={styles.accountBalanceText}>
+                        {selectedAccountToTransfer.currency}{" "}
+                        {selectedAccountToTransfer.balance}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <Text style={styles.placeholderText}>Select an account</Text>
+                )}
+                <Icon name="ChevronRight" size={24} />
+              </Pressable>
+            </Card>
+          )}
+          <Spacer height={10} />
+          {/* Date */}
+          <Text style={styles.label}>Date</Text>
+          <Card>
+            <Pressable
+              onPress={() => setShowDatePicker(true)}
+              style={styles.selectRow}
+            >
+              <View style={styles.selectedRow}>
+                <IconInsideCircle
+                  iconName="Calendar"
+                  iconColor={COLORS.primary}
+                  iconSize={15}
+                />
+                <Text>{date.toLocaleDateString()}</Text>
+              </View>
+              <Icon name="ChevronRight" size={24} />
+            </Pressable>
+            {showDatePicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={(event, selectedDate) => {
+                  const currentDate = selectedDate || date;
+                  setShowDatePicker(Platform.OS === "ios");
+                  setDate(currentDate);
+                }}
+              />
+            )}
+          </Card>
+          <Spacer />
+          {/* Notes */}
+          <Text style={styles.label}>Notes</Text>
+          <TextInput
+            style={styles.notesInput}
+            placeholder="Add a Notes"
+            value={description}
+            multiline={true}
+            numberOfLines={4}
+            onChangeText={setDescription}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* Save Button */}
-      <View style={styles.buttonContainer}>
+      <View style={styles.saveButtonContainer}>
         <Pressable style={styles.saveButton} onPress={handleSaveTransaction}>
           <Text style={styles.saveButtonText}>Save Transaction</Text>
         </Pressable>
@@ -422,7 +359,7 @@ const CreateTransaction = () => {
         visible={isCategoryModalVisible}
         onRequestClose={() => setCategoryModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Select a Category</Text>
             <FlatList
@@ -430,26 +367,23 @@ const CreateTransaction = () => {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Pressable
-                  style={styles.categoryItem}
+                  style={styles.modalListItem}
                   onPress={() => handleSelectCategory(item)}
                 >
-                  <View
-                    style={[
-                      styles.selectedCategoryIconContainer,
-                      { backgroundColor: item.backgroundColor },
-                    ]}
-                  >
-                    <Icon name={item.icon} size={16} color={item.color} />
-                  </View>
-                  <Text style={styles.categoryItemText}>{item.name}</Text>
+                  <IconInsideCircle
+                    iconName={item.icon}
+                    iconColor={item.iconColor}
+                    iconSize={15}
+                  />
+                  <Text style={styles.modalListItemText}>{item.name}</Text>
                 </Pressable>
               )}
             />
             <Pressable
-              style={styles.closeButton}
+              style={styles.modalCloseButton}
               onPress={() => setCategoryModalVisible(false)}
             >
-              <Text style={styles.closeButtonText}>Close</Text>
+              <Text style={styles.modalCloseButtonText}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -462,7 +396,7 @@ const CreateTransaction = () => {
         visible={isAccountModalVisible}
         onRequestClose={() => setAccountModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Select an Account</Text>
             <FlatList
@@ -470,19 +404,16 @@ const CreateTransaction = () => {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Pressable
-                  style={styles.categoryItem}
+                  style={styles.modalListItem}
                   onPress={() => handleSelectAccount(item)}
                 >
-                  <View
-                    style={[
-                      styles.selectedCategoryIconContainer,
-                      { backgroundColor: item.backgroundColor },
-                    ]}
-                  >
-                    <Icon name={item.icon} size={16} color={item.color} />
-                  </View>
-                  <View style={styles.accountItemDetails}>
-                    <Text style={styles.categoryItemText}>{item.name}</Text>
+                  <IconInsideCircle
+                    iconName={item.icon}
+                    iconColor={item.iconColor}
+                    iconSize={15}
+                  />
+                  <View style={styles.modalListItemDetails}>
+                    <Text style={styles.modalListItemText}>{item.name}</Text>
                     <Text style={styles.accountBalanceText}>
                       {item.currency} {item.balance}
                     </Text>
@@ -491,10 +422,10 @@ const CreateTransaction = () => {
               )}
             />
             <Pressable
-              style={styles.closeButton}
+              style={styles.modalCloseButton}
               onPress={() => setAccountModalVisible(false)}
             >
-              <Text style={styles.closeButtonText}>Close</Text>
+              <Text style={styles.modalCloseButtonText}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -507,140 +438,139 @@ export default CreateTransaction;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.background,
     flex: 1,
   },
-  transationType: {
+  typeSection: {
     justifyContent: "center",
     alignItems: "center",
     height: 80,
     paddingVertical: 17,
   },
-  transationTypeBox: {
+  typeButtonGroup: {
     height: "90%",
     width: "90%",
     borderRadius: 10,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: COLORS.gray100,
     flexDirection: "row",
     alignItems: "center",
   },
-  transationTypeItemIcon: {
-    marginRight: 10,
-    color: "#121212",
-  },
-  transationTypeItem: {
+  typeButton: {
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
     borderRadius: 10,
     width: "33.3%",
     height: "100%",
-    margin: "auto",
     flexDirection: "row",
   },
-  transationTypeItemText: {
-    color: "#121212",
+  typeButtonIcon: {
+    marginRight: 10,
+    color: COLORS.text,
   },
-  selectedTransationTypeItem: {
-    backgroundColor: "#6366f1",
+  typeButtonText: {
+    color: COLORS.text,
   },
-  selectedTransationTypeItemText: {
-    color: "#FFFFFF",
+  typeButtonSelected: {
+    backgroundColor: COLORS.primary,
   },
-  transactionAmount: {
+  typeButtonSelectedText: {
+    color: COLORS.background,
+  },
+  amountSection: {
     flexDirection: "row",
     alignItems: "center",
     width: "80%",
-    marginHorizontal: "auto",
+    alignSelf: "center",
     marginTop: 20,
   },
-  transactionCurrency: {
+  amountCurrency: {
     marginHorizontal: "10%",
     marginTop: 20,
     fontSize: 30,
-    color: "#9CA3AF",
+    color: COLORS.gray400,
   },
-  amountTextInputLabel: {
-    color: "#6B74A1",
+  amountLabel: {
+    color: COLORS.textLight,
     fontSize: 15,
   },
-  amountTextInput: {
+  amountInput: {
     fontSize: 40,
-    color: "#121212",
+    color: COLORS.text,
     width: 200,
   },
-  transactionCategoryLabel: {
+  label: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: COLORS.text,
     marginBottom: 10,
   },
-  selectCategory: {
+  selectRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  selectedCategoryIconContainer: {
-    marginRight: 10,
-    width: 35,
-    height: 35,
-    borderRadius: 30,
-    backgroundColor: "#FEE2E2",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  selectedCategory: {
+  selectedRow: {
     flexDirection: "row",
     alignItems: "center",
     padding: 5,
   },
-  descriptionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  descriptionInput: {
+  notesInput: {
     flex: 1,
     fontSize: 16,
-    color: "#121212",
+    height: 70,
+    color: COLORS.text,
     paddingVertical: 5,
-    marginLeft: 10,
+    textAlignVertical: "top",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 15,
+    borderColor: COLORS.gray100,
+    backgroundColor: COLORS.gray100,
   },
-  scrollContentContainer: {
+  accountBalanceText: {
+    color: COLORS.textLight,
+    fontSize: 12,
+  },
+  detailsScrollContent: {
     paddingTop: 10,
     paddingHorizontal: 20,
     paddingBottom: 100,
   },
-  buttonContainer: {
+  saveButtonContainer: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     borderTopWidth: 1,
-    borderTopColor: "#F3F4F6",
+    borderTopColor: COLORS.background,
   },
   saveButton: {
-    backgroundColor: "#6366f1",
+    backgroundColor: COLORS.primary,
     padding: 15,
     borderRadius: 15,
     alignItems: "center",
   },
   saveButtonText: {
-    color: "white",
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: "bold",
   },
   placeholderText: {
-    color: "#9CA3AF",
+    color: COLORS.textLight,
     fontSize: 16,
     paddingVertical: 10,
   },
   // Modal Styles
-  modalContainer: {
+  modalOverlay: {
     flex: 1,
     justifyContent: "flex-end",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -652,35 +582,39 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
-  categoryItem: {
+  modalListItem: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: COLORS.gray100,
   },
-  categoryItemText: {
+  modalListItemText: {
     fontSize: 16,
     marginLeft: 10,
   },
-  closeButton: {
-    backgroundColor: "#E5E7EB",
+  modalListItemIcon: {
+    marginRight: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalListItemDetails: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  modalCloseButton: {
+    backgroundColor: COLORS.gray100,
     padding: 15,
     borderRadius: 15,
     alignItems: "center",
     marginTop: 20,
   },
-  closeButtonText: {
-    color: "#1F2937",
+  modalCloseButtonText: {
+    color: COLORS.text,
     fontSize: 16,
     fontWeight: "bold",
-  },
-  accountBalanceText: {
-    color: "#6B7280",
-    fontSize: 12,
-  },
-  accountItemDetails: {
-    flex: 1,
-    marginLeft: 10,
   },
 });

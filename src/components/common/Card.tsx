@@ -1,12 +1,6 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
-
-interface CardProps {
-  notTouchable: boolean;
-  children: ReactNode;
-  style?: ViewStyle | ViewStyle[];
-  onPress?: () => void;
-}
+import { CardProps } from "../../../types";
 
 const Card: React.FC<CardProps> = ({
   notTouchable = false,
@@ -32,13 +26,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
     shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 2,
+    shadowRadius: 8,
+    elevation: 1,
   },
 });
 
