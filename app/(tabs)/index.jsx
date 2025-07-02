@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import tinycolor from "tinycolor2";
 
 // Components
 import Icon from "../../src/components/common/Icon";
@@ -16,11 +17,15 @@ import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
 import AppBar from "../../src/components/dashboard/AppBar";
 import BalanceCard from "../../src/components/dashboard/BalanceCard";
+import CardWithMutipleItems from "../../src/components/common/CardWithMutipleItems";
 import QuickActionButton from "../../src/components/dashboard/QuickActionsButtons";
 
 // Data
 import { accounts } from "../../src/mockData/accounts";
 import { transactions } from "../../src/mockData/transactions";
+
+// COLORS constant
+import { COLORS } from "../../src/constants/colors";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -30,19 +35,19 @@ const Dashboard = () => {
       id: 1,
       title: "Income",
       icon: "ArrowUp",
-      color: "#10B981",
+      color: COLORS.success,
     },
     {
       id: 2,
       title: "Expense",
       icon: "ArrowDown",
-      color: "#EF4444",
+      color: COLORS.danger,
     },
     {
       id: 3,
       title: "Transfer",
       icon: "RefreshCcw",
-      color: "#6366F1",
+      color: COLORS.primary,
     },
   ];
 
@@ -58,7 +63,7 @@ const Dashboard = () => {
         {/* Balance Card Section*/}
         <BalanceCard />
         {/* Quick Actions Section*/}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <Spacer height={5} />
           <View style={styles.quickActionsGrid}>
@@ -72,7 +77,7 @@ const Dashboard = () => {
               />
             ))}
           </View>
-        </View>
+        </View> */}
 
         <Spacer height={20} />
 
@@ -90,16 +95,24 @@ const Dashboard = () => {
               style={styles.accountCard}
               key={account.id}
               onPress={() => {
-                // Navigate to the create-account screen and pass account data
                 router.push({
                   pathname: `/accounts/${account.id}`,
-                  params: { account: JSON.stringify(account) }, // Pass account as a stringified JSON
+                  params: { account: JSON.stringify(account) },
                 });
               }}
             >
               <View style={styles.accountContainer}>
                 <View style={styles.accountInfoWrapper}>
-                  <View style={styles.accountIcon}>
+                  <View
+                    style={[
+                      styles.accountIcon,
+                      {
+                        backgroundColor: tinycolor(account.iconColor)
+                          .setAlpha(0.3)
+                          .toRgbString(),
+                      },
+                    ]}
+                  >
                     <Icon
                       name={account.icon}
                       size={24}
@@ -131,26 +144,32 @@ const Dashboard = () => {
             </TouchableOpacity>
           </View>
           <Spacer height={5} />
-          <FlatList
-            data={transactions.slice(0, 5)}
-            scrollEnabled={false}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <Card
-                style={[styles.transactionCard, { borderRadius: 0 }]}
+          <CardWithMutipleItems>
+            {transactions.slice(0, 5).map((item) => (
+              <TouchableOpacity
+                key={item.id}
                 onPress={() => {
                   const { ...serializableTransactionData } = item;
-                  // Navigate to the create-account screen and pass account data
                   router.push({
                     pathname: `/transactions/${item.id}`,
                     params: {
                       transaction: JSON.stringify(serializableTransactionData),
-                    }, // Pass account as a stringified JSON
+                    },
                   });
                 }}
+                activeOpacity={0.7}
               >
                 <View style={styles.transactionItem}>
-                  <View style={styles.transactionIconContainer}>
+                  <View
+                    style={[
+                      styles.transactionIconContainer,
+                      {
+                        backgroundColor: tinycolor(item.iconColor)
+                          .setAlpha(0.3)
+                          .toRgbString(),
+                      },
+                    ]}
+                  >
                     <Icon name={item.icon} size={24} color={item.iconColor} />
                   </View>
                   <View style={styles.transactionDetails}>
@@ -174,19 +193,17 @@ const Dashboard = () => {
                     <Text style={styles.transactionDate}>{item.date}</Text>
                   </View>
                 </View>
-              </Card>
-            )}
-            ListHeaderComponent={<Spacer height={5} />}
-            ListFooterComponent={<Spacer height={80} />} // To avoid FAB overlap
-            showsVerticalScrollIndicator={false}
-          />
+              </TouchableOpacity>
+            ))}
+          </CardWithMutipleItems>
+          <Spacer height={80} />
         </View>
       </ScrollView>
       <TouchableOpacity
         style={styles.fab}
         onPress={() => router.push("/transactions/create")}
       >
-        <Icon name="Plus" size={24} color="#fff" />
+        <Icon name="Plus" size={24} color={COLORS.white} />
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -197,7 +214,7 @@ export default Dashboard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
   },
   scrollView: {
     flex: 1,
@@ -211,7 +228,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#111827",
+    color: COLORS.text,
     marginBottom: 10,
   },
   quickActionsGrid: {
@@ -225,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   seeAllText: {
-    color: "#6366F1",
+    color: COLORS.primary,
     fontWeight: "600",
   },
   accountCard: {
@@ -245,7 +262,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
@@ -256,18 +272,18 @@ const styles = StyleSheet.create({
   accountInfoName: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#111827",
+    color: COLORS.text,
   },
   accountInfoNo: {
     fontSize: 14,
     fontWeight: "400",
-    color: "#6B7280",
+    color: COLORS.textLight,
     marginTop: 2,
   },
   accountBalance: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#111827",
+    color: COLORS.text,
     textAlign: "right",
   },
   transactionsCard: {
@@ -275,7 +291,7 @@ const styles = StyleSheet.create({
   },
   transactionSeparator: {
     height: 1,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: COLORS.backgroundMuted,
     marginLeft: 60,
   },
   transactionListContainer: {
@@ -289,10 +305,7 @@ const styles = StyleSheet.create({
   transactionListHeaderText: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#374151",
-  },
-  transactionCard: {
-    paddingHorizontal: 20,
+    color: COLORS.textSecondary,
   },
   transactionItem: {
     flexDirection: "row",
@@ -302,8 +315,8 @@ const styles = StyleSheet.create({
   transactionIconContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    borderRadius: 50,
+    backgroundColor: COLORS.text,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
@@ -315,11 +328,11 @@ const styles = StyleSheet.create({
   transactionName: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#1F2937",
+    color: COLORS.text,
   },
   transactionCategory: {
     fontSize: 12,
-    color: "#6B7280",
+    color: COLORS.textLight,
     marginTop: 2,
   },
   transactionAmountContainer: {
@@ -329,11 +342,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-  incomeAmount: { color: "#10B981" },
-  expenseAmount: { color: "#EF4444" },
+  incomeAmount: { color: COLORS.success },
+  expenseAmount: { color: COLORS.danger },
   transactionDate: {
     fontSize: 11,
-    color: "#9CA3AF",
+    color: COLORS.textMuted,
     marginTop: 2,
   },
   fab: {
@@ -344,7 +357,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     right: 20,
     bottom: 20,
-    backgroundColor: "#6366F1",
+    backgroundColor: COLORS.primary,
     borderRadius: 28,
     elevation: 8,
     shadowOffset: { width: 0, height: 2 },

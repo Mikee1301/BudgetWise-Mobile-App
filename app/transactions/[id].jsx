@@ -9,6 +9,7 @@ import CustomAppBar from "../../src/components/common/CustomAppBar";
 import Icon from "../../src/components/common/Icon";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
+import { COLORS } from "../../src/constants/colors";
 
 const TransactionDetails = () => {
   const router = useRouter();
@@ -136,7 +137,7 @@ export default TransactionDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
     alignItems: "center",
   },
   transactionIcon: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   },
   transactionCategory: {
     fontSize: 16,
-    color: "#666",
+    color: COLORS.textLight,
     marginTop: 5,
   },
   transactionDetails: {
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: COLORS.border,
   },
   transactionDetailsIcon: {
     flexDirection: "row",
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   },
   transactionDetailsIconText: {
     marginLeft: 8,
-    color: "#666",
+    color: COLORS.text,
     fontSize: 14,
   },
   transactionActions: {
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   editTransactionButton: {
-    backgroundColor: "#6366F1",
+    backgroundColor: COLORS.primary,
     padding: 15,
     borderRadius: 8,
     marginTop: 20,
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   editTransactionButtonText: {
-    color: "#fff",
+    color: COLORS.white,
     fontSize: 16,
     // fontWeight: "bold",
   },

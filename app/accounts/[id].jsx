@@ -10,7 +10,7 @@ import IconInsideCicle from "../../src/components/common/IconInsideCicle";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
 import Icon from "../../src/components/common/Icon";
-import tinycolor from "tinycolor2";
+import { COLORS } from "../../src/constants/colors";
 
 const AccountInfo = () => {
   const router = useRouter();
@@ -60,13 +60,15 @@ const AccountInfo = () => {
       <Spacer height={10} />
       <Card notTouchable={true} style={styles.accountSummaryWrapper}>
         <View style={styles.accountSummaryItem}>
-          <Text style={[styles.accountSummaryAmount, { color: "#22C55E" }]}>
+          <Text
+            style={[styles.accountSummaryAmount, { color: COLORS.success }]}
+          >
             ₱ 1,0000
           </Text>
           <Text style={styles.accountSummaryLabel}>Total Income</Text>
         </View>
         <View style={styles.accountSummaryItem}>
-          <Text style={[styles.accountSummaryAmount, { color: "#EF4444" }]}>
+          <Text style={[styles.accountSummaryAmount, { color: COLORS.danger }]}>
             ₱ 1,0000
           </Text>
           <Text style={styles.accountSummaryLabel}>Total Expenses</Text>
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   editTransactionButton: {
-    backgroundColor: "#6366F1",
+    backgroundColor: COLORS.primary,
     padding: 15,
     borderRadius: 8,
     marginTop: 20,

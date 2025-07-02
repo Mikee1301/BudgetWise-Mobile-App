@@ -2,12 +2,14 @@ import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import tinycolor from "tinycolor2";
 
 // Components
 import Icon from "../../src/components/common/Icon";
 import Card from "../../src/components/common/Card";
 import Dropdown from "../../src/components/common/Dropdown";
 import Spacer from "../../src/components/common/Spacer";
+import { COLORS } from "../../src/constants/colors";
 
 // Data
 import { transactions } from "../../src/mockData/transactions";
@@ -164,12 +166,14 @@ const Transactions = () => {
             <View style={styles.statContainer}>
               <View>
                 <Text style={styles.cardSummaryLabel}>Total Income</Text>
-                <Text style={[styles.cardSummaryValue, { color: "#10B981" }]}>
+                <Text
+                  style={[styles.cardSummaryValue, { color: COLORS.success }]}
+                >
                   {currenySymbol} {totalIncome.toLocaleString("en-US")}
                 </Text>
               </View>
               <View style={styles.statIcon}>
-                <Icon name="ArrowUp" size={24} color="#10B981" />
+                <Icon name="ArrowUp" size={24} color={COLORS.success} />
               </View>
             </View>
           </Card>
@@ -177,12 +181,14 @@ const Transactions = () => {
             <View style={styles.statContainer}>
               <View>
                 <Text style={styles.cardSummaryLabel}>Total Expenses</Text>
-                <Text style={[styles.cardSummaryValue, { color: "#EF4444" }]}>
+                <Text
+                  style={[styles.cardSummaryValue, { color: COLORS.danger }]}
+                >
                   {currenySymbol} {totalExpenses.toLocaleString("en-US")}
                 </Text>
               </View>
               <View style={[styles.statIcon, { backgroundColor: "#FEE2E2" }]}>
-                <Icon name="ArrowDown" size={24} color="#EF4444" />
+                <Icon name="ArrowDown" size={24} color={COLORS.danger} />
               </View>
             </View>
           </Card>
@@ -210,7 +216,16 @@ const Transactions = () => {
                 }}
               >
                 <View style={styles.transactionItem}>
-                  <View style={styles.transactionIconContainer}>
+                  <View
+                    style={[
+                      styles.transactionIconContainer,
+                      {
+                        backgroundColor: tinycolor(item.iconColor)
+                          .setAlpha(0.3)
+                          .toRgbString(),
+                      },
+                    ]}
+                  >
                     <Icon name={item.icon} size={24} color={item.iconColor} />
                   </View>
                   <View style={styles.transactionDetails}>
@@ -223,7 +238,7 @@ const Transactions = () => {
                     <Text
                       style={[
                         styles.transactionAmount,
-                        item.type === "income"
+                        item.type === "Income"
                           ? styles.incomeAmount
                           : styles.expenseAmount,
                       ]}
@@ -251,10 +266,10 @@ export default Transactions;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.background,
   },
   filterSection: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.background,
   },
   filterContainer: {
     flexDirection: "row",
@@ -265,11 +280,11 @@ const styles = StyleSheet.create({
   pickerContainer: {
     height: 40,
     width: 185,
-    borderColor: "#e0e0e0",
+    borderColor: COLORS.gray200,
     borderWidth: 1,
     borderRadius: 8,
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
     overflow: "hidden",
   },
   groupByContainer: {
@@ -282,19 +297,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     borderRadius: 120,
-    backgroundColor: "#f9fafb",
+    backgroundColor: COLORS.gray100,
   },
   selectedGroupByButton: {
-    backgroundColor: "#6366f1",
+    backgroundColor: COLORS.primary,
   },
   groupByButtonText: {
-    color: "black",
+    color: COLORS.text,
   },
   selectedGroupByButtonText: {
-    color: "white",
+    color: COLORS.textInverse,
   },
   transactionSection: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.background,
     flex: 1,
     paddingHorizontal: 15,
     paddingTop: 10,
@@ -313,7 +328,7 @@ const styles = StyleSheet.create({
   },
   cardSummaryLabel: {
     fontSize: 13,
-    color: "#111827",
+    color: COLORS.text,
   },
   cardSummaryValue: {
     fontSize: 16,
@@ -331,8 +346,8 @@ const styles = StyleSheet.create({
   },
   transactionListContainer: {
     // paddingHorizontal: 15,
-    marginBottom: 20,
-    paddingVertical: 10,
+    marginBottom: 45,
+    paddingVertical: 20,
   },
   transactionListHeader: {
     marginBottom: 10,
@@ -340,7 +355,7 @@ const styles = StyleSheet.create({
   transactionListHeaderText: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#374151",
+    color: COLORS.text,
   },
   transactionCard: {
     paddingHorizontal: 10,
@@ -353,8 +368,7 @@ const styles = StyleSheet.create({
   transactionIconContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
@@ -366,11 +380,11 @@ const styles = StyleSheet.create({
   transactionName: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#1F2937",
+    color: COLORS.text,
   },
   transactionCategory: {
     fontSize: 12,
-    color: "#6B7280",
+    color: COLORS.textLight,
     marginTop: 2,
   },
   transactionAmountContainer: {
@@ -380,11 +394,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-  incomeAmount: { color: "#10B981" },
-  expenseAmount: { color: "#EF4444" },
+  incomeAmount: { color: COLORS.success },
+  expenseAmount: { color: COLORS.danger },
   transactionDate: {
     fontSize: 11,
-    color: "#9CA3AF",
+    color: COLORS.text,
     marginTop: 2,
   },
 });

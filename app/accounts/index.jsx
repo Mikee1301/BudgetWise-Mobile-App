@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { CreditCard, PiggyBank, Plus } from "lucide-react-native";
+import { Plus } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
@@ -10,9 +10,10 @@ import {
   View,
 } from "react-native";
 // Components
-import Icon from "../../src/components/common/Icon";
+import { COLORS } from "../../src/constants/colors";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
+import IconInsideCircle from "../../src/components/common/IconInsideCicle";
 
 // Data
 import { accounts } from "../../src/mockData/accounts";
@@ -76,15 +77,6 @@ const Accounts = () => {
     }
   }, [selectedFilter, initialLayoutDone]);
 
-  const openModalForEdit = (account) => {
-    setEditingAccount(account);
-    setNewAccountName(account.name);
-    setNewAccountBalance(account.balance.toString());
-    setNewAccountNo(account.accountNo.toString());
-    setNewAccountCategory(account.category);
-    setModalVisible(true);
-  };
-
   const handleSaveAccount = () => {
     // Basic validation (can be expanded)
     if (!newAccountName || !newAccountBalance || !newAccountNo) {
@@ -107,15 +99,6 @@ const Accounts = () => {
 
     setModalVisible(false);
     resetFormAndEditingState();
-  };
-
-  const handleDeleteAccount = () => {
-    if (editingAccount) {
-      console.log("Deleting Account:", editingAccount);
-      // TODO: Here you would delete the account from your state/backend
-      setModalVisible(false);
-      resetFormAndEditingState();
-    }
   };
 
   const resetFormAndEditingState = () => {
@@ -191,13 +174,12 @@ const Accounts = () => {
             >
               <View style={[styles.accountContainer, { marginTop: 15 }]}>
                 <View style={styles.accountInfoWrapper}>
-                  <View style={styles.accountIcon}>
-                    <Icon
-                      name={account.icon}
-                      size={24}
-                      color={account.iconColor}
-                    />
-                  </View>
+                  <IconInsideCircle
+                    iconName={account.icon}
+                    iconColor={account.iconColor}
+                    iconSize={24}
+                  />
+
                   <View style={styles.accountInfo}>
                     <Text style={styles.accountInfoName}>{account.name}</Text>
                     <Text style={styles.accountInfoNo}>
@@ -223,7 +205,7 @@ const Accounts = () => {
         style={styles.fab}
         onPress={() => router.push("/accounts/create")}
       >
-        <Plus size={28} color="#fff" />
+        <Plus size={28} color={COLORS.textInverse} />
       </TouchableOpacity>
     </View>
   );
@@ -234,7 +216,7 @@ export default Accounts;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
   },
   scrollView: {
     flex: 1,
@@ -251,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "90%",
     height: 45,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: COLORS.gray100,
     margin: "auto",
     marginTop: 20,
     borderRadius: 10,
@@ -266,11 +248,10 @@ const styles = StyleSheet.create({
   },
   filterText: {
     fontSize: 14,
-    color: "#374151",
+    color: COLORS.text,
   },
   selectedFilterDisplay: {
     fontSize: 16,
-    color: "#374151",
     textAlign: "center",
     marginTop: 10,
   },
@@ -279,7 +260,7 @@ const styles = StyleSheet.create({
     top: 4,
     left: 1,
     height: "80%",
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
     borderRadius: 10,
   },
   accountCard: {
@@ -298,33 +279,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  accountIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#F3F4F6",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
   accountInfo: {
     justifyContent: "center",
   },
   accountInfoName: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#111827",
+    color: COLORS.text,
   },
   accountInfoNo: {
     fontSize: 14,
     fontWeight: "400",
-    color: "#6B7280",
+    color: COLORS.textLight,
     marginTop: 2,
   },
   accountBalance: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#111827",
+    color: COLORS.text,
     textAlign: "right",
   },
   fab: {
@@ -335,91 +307,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     right: 20,
     bottom: 20,
-    backgroundColor: "#6366F1",
+    backgroundColor: COLORS.primary,
     borderRadius: 28,
     elevation: 8,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     zIndex: 10,
-  },
-  // Modal Styles
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "80%",
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "stretch",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 15,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    marginTop: 5,
-  },
-  pickerContainer: {
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    justifyContent: "center",
-  },
-  picker: {
-    height: 50,
-    width: "100%",
-  },
-  modalButton: {
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-  },
-  saveButton: {
-    backgroundColor: "#6366F1",
-  },
-  cancelButton: {
-    backgroundColor: "#EF4444",
-  },
-  deleteButton: {
-    backgroundColor: "#DC2626",
-  },
-  modalButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
   },
 });

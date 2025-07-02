@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ArrowDownLeft, ArrowUpRight, Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { COLORS } from "../../constants/colors";
 
 interface BalanceCardProps {
   style?: object;
@@ -16,7 +17,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ style, ...props }) => {
 
   return (
     <LinearGradient
-      colors={["#6366F1", "#8B5CF6"]}
+      colors={[COLORS.primary, COLORS.primaryLight]}
       style={[styles.balanceCard, style]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
@@ -29,9 +30,9 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ style, ...props }) => {
           style={styles.eyeButton}
         >
           {balanceVisible ? (
-            <Eye size={20} color="#FFFFFF" strokeWidth={2} />
+            <Eye size={20} color={COLORS.white} strokeWidth={2} />
           ) : (
-            <EyeOff size={20} color="#FFFFFF" strokeWidth={2} />
+            <EyeOff size={20} color={COLORS.white} strokeWidth={2} />
           )}
         </TouchableOpacity>
       </View>
@@ -47,8 +48,13 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ style, ...props }) => {
       <View style={styles.balanceStats}>
         {/* Income Section */}
         <View style={styles.statItem}>
-          <View style={styles.statIcon}>
-            <ArrowUpRight size={16} color="#10B981" strokeWidth={2} />
+          <View
+            style={[
+              styles.statIcon,
+              { backgroundColor: COLORS.successVeryLight },
+            ]}
+          >
+            <ArrowUpRight size={16} color={COLORS.success} strokeWidth={2} />
           </View>
           <View>
             <Text style={styles.statLabel}>Income</Text>
@@ -63,8 +69,13 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ style, ...props }) => {
 
         {/* Expenses Section */}
         <View style={styles.statItem}>
-          <View style={[styles.statIcon, { backgroundColor: "#FEE2E2" }]}>
-            <ArrowDownLeft size={16} color="#EF4444" strokeWidth={2} />
+          <View
+            style={[
+              styles.statIcon,
+              { backgroundColor: COLORS.dangerVeryLight },
+            ]}
+          >
+            <ArrowDownLeft size={16} color={COLORS.danger} strokeWidth={2} />
           </View>
           <View>
             <Text style={styles.statLabel}>Expenses</Text>
@@ -109,7 +120,7 @@ const styles = StyleSheet.create({
   balanceAmount: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: COLORS.white,
     marginBottom: 20,
   },
   balanceStats: {
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 16,
-    backgroundColor: "#DCFCE7",
+    backgroundColor: COLORS.successVeryLight, // Default, can be overridden
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
@@ -139,7 +150,7 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 14,
-    color: "#FFFFFF",
+    color: COLORS.white,
     fontWeight: "600",
     marginTop: 2,
   },

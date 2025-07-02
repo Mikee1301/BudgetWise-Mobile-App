@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../../src/components/common/Spacer";
 import CustomAppBar from "../../src/components/common/CustomAppBar";
+import { COLORS } from "../../src/constants/colors";
 
 const accountCategories = ["Banks", "Cards", "Cash"];
 
@@ -180,8 +181,8 @@ const CreateAccountScreen = () => {
             </>
           )}
           <Spacer height={10} />
-          <View style={styles.divider} />
-          <Spacer height={10} />
+          {/* <View style={styles.divider} /> */}
+          {/* <Spacer height={10} />
           <Pressable
             style={({ pressed }) => [
               styles.button,
@@ -193,7 +194,7 @@ const CreateAccountScreen = () => {
             <Text style={[styles.buttonText, styles.cancelButtonText]}>
               Cancel
             </Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -213,17 +214,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   formCard: {
-    width: "95%",
+    flex: 1,
+    width: "100%",
     backgroundColor: "#fff",
-    borderRadius: 18,
+    // borderRadius: 18,
     padding: 24,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 4,
-    marginTop: 24,
-    marginBottom: 24,
+    // elevation: 1,
+    // marginTop: 24,
+    // marginBottom: 24,
   },
   title: {
     fontSize: 22,
@@ -271,10 +273,10 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   saveButton: {
-    backgroundColor: "#6366F1",
+    backgroundColor: COLORS.primary,
   },
   deleteButton: {
-    backgroundColor: "#F87171",
+    backgroundColor: COLORS.danger,
   },
   cancelButton: {
     backgroundColor: "#F3F4F6",
