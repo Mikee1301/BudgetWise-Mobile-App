@@ -10,7 +10,7 @@ import IconInsideCicle from "../../src/components/common/IconInsideCicle";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
 import Icon from "../../src/components/common/Icon";
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 
 const AccountInfo = () => {
   const router = useRouter();

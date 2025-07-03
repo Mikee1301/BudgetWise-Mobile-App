@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon from "../common/Icon";
-import { COLORS } from "../../constants/colors";
+import { COLORS } from "../../constants/Colors";
 
 const CustomAppBar = ({
   title = "AppBar",

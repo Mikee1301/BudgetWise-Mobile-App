@@ -14,7 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../../src/components/common/Spacer";
 import CustomAppBar from "../../src/components/common/CustomAppBar";
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 
 const accountCategories = ["Banks", "Cards", "Cash"];
 

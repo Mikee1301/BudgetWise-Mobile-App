@@ -25,7 +25,7 @@ import { accounts } from "../../src/mockData/accounts";
 import { transactions } from "../../src/mockData/transactions";
 
 // COLORS constant
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 
 const Dashboard = () => {
   const navigation = useNavigation();

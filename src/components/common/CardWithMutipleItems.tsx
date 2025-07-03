@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { CardProps } from "../../../types";
-import { COLORS } from "../../constants/colors";
+import { COLORS } from "../../constants/Colors";
 
 const CardWithMutipleItems: React.FC<CardProps> = ({
   notTouchable = false,

@@ -2,7 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ArrowDownLeft, ArrowUpRight, Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/colors";
+import { COLORS } from "../../constants/Colors";
 
 interface BalanceCardProps {
   style?: object;

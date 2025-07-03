@@ -25,7 +25,7 @@ import Spacer from "../../src/components/common/Spacer";
 import CustomAppBar from "../../src/components/common/CustomAppBar";
 import IconInsideCircle from "../../src/components/common/IconInsideCicle";
 
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 
 // Data
 import { categories } from "../../src/mockData/categories";

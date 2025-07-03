@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 // Components
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
 import IconInsideCircle from "../../src/components/common/IconInsideCicle";

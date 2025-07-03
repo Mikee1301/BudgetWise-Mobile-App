@@ -18,7 +18,7 @@ import { Minus, Plus } from "lucide-react-native";
 import Card from "../../../src/components/common/Card";
 import Icon from "../../../src/components/common/Icon";
 import Spacer from "../../../src/components/common/Spacer";
-import { COLORS } from "../../../src/constants/colors";
+import { COLORS } from "../../../src/constants/Colors";
 // Data
 import { categories } from "../../../src/mockData/categories";
 import { accounts } from "../../../src/mockData/accounts";

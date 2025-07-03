@@ -9,7 +9,7 @@ import Icon from "../../src/components/common/Icon";
 import Card from "../../src/components/common/Card";
 import Dropdown from "../../src/components/common/Dropdown";
 import Spacer from "../../src/components/common/Spacer";
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 
 // Data
 import { transactions } from "../../src/mockData/transactions";

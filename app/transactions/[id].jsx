@@ -9,7 +9,7 @@ import CustomAppBar from "../../src/components/common/CustomAppBar";
 import Icon from "../../src/components/common/Icon";
 import Card from "../../src/components/common/Card";
 import Spacer from "../../src/components/common/Spacer";
-import { COLORS } from "../../src/constants/colors";
+import { COLORS } from "../../src/constants/Colors";
 
 const TransactionDetails = () => {
   const router = useRouter();
