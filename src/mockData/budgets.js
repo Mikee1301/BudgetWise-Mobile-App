@@ -1,0 +1,42 @@
+export const budgets = [
+  {
+    id: "1",
+    icon: "ShoppingCart",
+    iconColor: "#F59E42",
+    budgetName: "Groceries",
+    allocatedBudget: 5000,
+    remainingBalance: -1200,
+  },
+  {
+    id: "2",
+    icon: "House",
+    iconColor: "#4F46E5",
+    budgetName: "Rent",
+    allocatedBudget: 12000,
+    remainingBalance: 0,
+  },
+  {
+    id: "3",
+    icon: "Car",
+    iconColor: "#10B981",
+    budgetName: "Transport",
+    allocatedBudget: 2000,
+    remainingBalance: 800,
+  },
+  {
+    id: "4",
+    icon: "Heart",
+    iconColor: "#EF4444",
+    budgetName: "Health",
+    allocatedBudget: 1500,
+    remainingBalance: 900,
+  },
+  {
+    id: "5",
+    icon: "Book",
+    iconColor: "#6366F1",
+    budgetName: "Education",
+    allocatedBudget: 3000,
+    remainingBalance: 2500,
+  },
+];

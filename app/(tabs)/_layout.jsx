@@ -1,22 +1,20 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
+import Icon from "../../src/components/common/Icon";
 
 const TabLayout = () => {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#6366F1", // Example: active tab color
-        tabBarInactiveTintColor: "#6B7280", // Example: inactive tab color
+        tabBarActiveTintColor: "#6366F1",
+        tabBarInactiveTintColor: "#6B7280",
         tabBarStyle: {
-          // backgroundColor: '#FFFFFF', // Your tab bar style
-          // borderTopWidth: 0,
           height: 80,
-          paddingBottom: 10, // Adjust this value for bottom padding
+          paddingBottom: 10,
           paddingTop: 10,
         },
-        // animation: "fade",
       }}
     >
       <Tabs.Screen
@@ -24,7 +22,7 @@ const TabLayout = () => {
         options={{
           title: "Dashboard",
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="dashboard" size={size} color={color} />
+            <Icon name="LayoutDashboard" color={color} size={size} />
           ),
         }}
       />
@@ -36,22 +34,10 @@ const TabLayout = () => {
           headerTitle: "Transactions",
           headerTitleAlign: "center",
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="swap-horiz" size={size} color={color} />
+            <Icon name="ArrowRightLeft" color={color} size={size} />
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="createTransaction"
-        options={{
-          headerShown: true,
-          title: "",
-          headerTitle: "Add Transaction",
-          headerTitleAlign: "center",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="add-circle-outline" size={30} color={color} />
-          ),
-        }}
-      /> */}
       <Tabs.Screen
         name="accounts"
         options={{
@@ -60,11 +46,19 @@ const TabLayout = () => {
           headerTitle: "Accounts",
           headerTitleAlign: "center",
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons
-              name="account-balance-wallet"
-              size={size}
-              color={color}
-            />
+            <Icon name="Wallet" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="budgets"
+        options={{
+          headerShown: true,
+          title: "Budgets",
+          headerTitle: "Budget Goals",
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="Goal" color={color} size={size} />
           ),
         }}
       />
@@ -76,7 +70,7 @@ const TabLayout = () => {
           headerTitle: "Profile",
           headerTitleAlign: "center",
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="person-outline" size={size} color={color} />
+            <Icon name="User" color={color} size={size} />
           ),
         }}
       />
