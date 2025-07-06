@@ -182,12 +182,12 @@ const Dashboard = () => {
                     <Text
                       style={[
                         styles.transactionAmount,
-                        item.type === "income"
+                        item.type === "Income"
                           ? styles.incomeAmount
                           : styles.expenseAmount,
                       ]}
                     >
-                      {item.type === "income" ? "+" : "-"}₱
+                      {item.type === "Income" ? "+" : "-"}₱
                       {Math.abs(item.amount).toLocaleString("en-US")}
                     </Text>
                     <Text style={styles.transactionDate}>{item.date}</Text>

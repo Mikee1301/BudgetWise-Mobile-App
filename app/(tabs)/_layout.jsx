@@ -1,7 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "../../src/components/common/Icon";
+import { COLORS } from "../../src/constants/Colors";
 
 const TabLayout = () => {
   return (
@@ -59,6 +60,11 @@ const TabLayout = () => {
           headerTitleAlign: "center",
           tabBarIcon: ({ color, size }) => (
             <Icon name="Goal" color={color} size={size} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity style={{ marginRight: 16 }}>
+              <Icon name="Plus" color={COLORS.primary} size={24} />
+            </TouchableOpacity>
           ),
         }}
       />
