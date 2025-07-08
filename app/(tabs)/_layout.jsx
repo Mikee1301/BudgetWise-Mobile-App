@@ -1,10 +1,11 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "../../src/components/common/Icon";
 import { COLORS } from "../../src/constants/Colors";
 
 const TabLayout = () => {
+  const router = useRouter();
   return (
     <Tabs
       screenOptions={{
@@ -62,7 +63,10 @@ const TabLayout = () => {
             <Icon name="Goal" color={color} size={size} />
           ),
           headerRight: () => (
-            <TouchableOpacity style={{ marginRight: 16 }}>
+            <TouchableOpacity
+              style={{ marginRight: 16 }}
+              onPress={() => router.push("../budgets/create")}
+            >
               <Icon name="Plus" color={COLORS.primary} size={24} />
             </TouchableOpacity>
           ),
